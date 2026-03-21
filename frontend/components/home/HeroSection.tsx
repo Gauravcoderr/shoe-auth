@@ -17,7 +17,7 @@ const MARQUEE_ITEMS = [
   { brand: "Adidas Samba", colorway: "Black/White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1555274175-6cbf6f3b137b?w=400&q=80" },
   { brand: "Air Jordan 4", colorway: "Bred", verdict: "FAKE", color: "#dc2626", bg: "#fef2f2", border: "#fecaca", img: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=400&q=80" },
   { brand: "New Balance 550", colorway: "White/Green", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80" },
-  { brand: "Yeezy 700", colorway: "Wave Runner", verdict: "INCONCLUSIVE", color: "#d97706", bg: "#fffbeb", border: "#fde68a", img: "https://images.unsplash.com/photo-1584735175315-9d5df23be620?w=400&q=80" },
+  { brand: "Yeezy 700", colorway: "Wave Runner", verdict: "INCONCLUSIVE", color: "#d97706", bg: "#fffbeb", border: "#fde68a", img: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&q=80" },
   { brand: "Nike AF1", colorway: "Triple White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&q=80" },
 ];
 
