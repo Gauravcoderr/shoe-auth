@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none">
+  <rect width="200" height="160" fill="#f8f8f6"/>
+  <!-- Shoe inner side (mirrored) -->
+  <path d="M170 105 Q165 95 145 90 Q130 86 110 87 Q85 85 65 82 Q50 80 40 76 L35 80 Q45 88 60 90 Q80 93 105 94 Q130 96 148 100 Q158 104 165 110 Z" fill="#222"/>
+  <!-- Midsole -->
+  <path d="M165 110 Q158 104 148 100 Q130 96 105 94 Q80 93 60 90 Q45 88 35 80 L32 84 Q42 94 57 97 Q77 100 103 101 Q128 103 146 107 Q156 111 162 116 Z" fill="#e8e8e0"/>
+  <!-- Outsole -->
+  <path d="M162 116 Q156 111 146 107 Q128 103 103 101 Q77 100 57 97 Q42 94 32 84 L30 89 Q38 100 55 103 Q75 107 102 108 Q127 109 145 113 Q154 117 160 122 Z" fill="#555"/>
+  <!-- Toe box -->
+  <path d="M170 105 Q172 108 173 113 Q172 118 167 120 Q164 121 160 122 Q162 116 165 110 Z" fill="#222"/>
+  <!-- Camera icon -->
+  <rect x="15" y="12" width="30" height="22" rx="4" fill="#111" opacity="0.7"/>
+  <circle cx="30" cy="23" r="6" fill="none" stroke="white" stroke-width="1.5"/>
+  <circle cx="30" cy="23" r="3" fill="white" opacity="0.5"/>
+  <rect x="38" y="14" width="5" height="3" rx="1" fill="white" opacity="0.6"/>
+  <!-- Arrow -->
+  <line x1="35" y1="38" x2="60" y2="78" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.4"/>
+  <!-- Label -->
+  <text x="100" y="145" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#666">INNER (ARCH) SIDE · EYE LEVEL</text>
+</svg>

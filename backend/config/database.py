@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:3000"
     GMAIL_USER: str = ""
     GMAIL_APP_PASSWORD: str = ""
+    SNEAKERS_API_KEY: str = ""
+    GOOGLE_API_KEY: str = ""
+    GOOGLE_SEARCH_ENGINE_ID: str = ""
 
     class Config:
         env_file = ".env"
@@ -30,6 +33,9 @@ async def connect_db():
     await db.users.create_index("email", unique=True)
     await db.auth_checks.create_index([("user_id", 1), ("created_at", -1)])
     await db.auth_checks.create_index("processing_status")
+    # Reference image cache — TTL 30 days
+    await db.reference_images.create_index("cache_key", unique=True)
+    await db.reference_images.create_index("created_at", expireAfterSeconds=2592000)
     print("✅ Connected to MongoDB: shoe-auth")
 
 

@@ -9,12 +9,12 @@ import AngleSlot from "@/components/check/AngleSlot";
 const ANGLES = [
   { id: "side-lateral", label: "Lateral Side", required: true, tip: "Outer side of shoe at eye level. Full shoe in frame." },
   { id: "side-medial", label: "Medial Side", required: true, tip: "Inner (arch) side at eye level." },
-  { id: "top-down", label: "Top Down", required: true, tip: "Directly above, laces visible, entire shoe." },
-  { id: "heel", label: "Heel / Back", required: true, tip: "Directly behind the shoe, heel centered." },
+  { id: "top-down", label: "Top Down", required: true, tip: "Directly above, laces visible, entire shoe in frame." },
+  { id: "heel", label: "Heel / Back", required: true, tip: "Directly behind shoe, heel centered, both sides symmetric." },
   { id: "sole", label: "Sole (Bottom)", required: true, tip: "Flat on surface, camera directly above sole." },
-  { id: "tongue", label: "Tongue Label", required: false, tip: "Close-up on tongue label text. Must be legible." },
-  { id: "toe-front", label: "Toe Box (Front)", required: false, tip: "Straight-on front view, flat surface." },
-  { id: "box-label", label: "Box Label", required: false, tip: "Shoe box label close-up if available." },
+  { id: "tongue", label: "Tongue Label", required: false, tip: "Close-up on tongue label text. Must be fully legible." },
+  { id: "toe-front", label: "Toe Box (Front)", required: false, tip: "Straight-on front view, shoe flat, toe centered." },
+  { id: "box-label", label: "Box Label", required: false, tip: "Shoe box label close-up. All text must be legible." },
 ];
 
 export default function UploadPage() {
@@ -24,11 +24,26 @@ export default function UploadPage() {
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [referenceImages, setReferenceImages] = useState<string[]>([]);
 
   useEffect(() => {
     const data = sessionStorage.getItem("pending_check");
     if (!data) { router.push("/check"); return; }
-    setPending(JSON.parse(data));
+    const parsed = JSON.parse(data);
+    setPending(parsed);
+
+    // Fetch reference images for this shoe in background
+    const params = new URLSearchParams({
+      brand: parsed.brand,
+      model: parsed.model,
+      colorway: parsed.colorway || "",
+    });
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/checks/reference-images?${params}`)
+      .then(r => r.ok ? r.json() : { images: [] })
+      .then(data => {
+        if (data.images?.length) setReferenceImages(data.images);
+      })
+      .catch(() => {});
   }, [router]);
 
   const handleFile = async (angleId: string, file: File) => {
@@ -73,7 +88,7 @@ export default function UploadPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-14">
-      <div className="mb-10">
+      <div className="mb-8">
         <p className="text-xs text-[#bbb] uppercase tracking-widest mb-3 font-syne">Upload Photos</p>
         <h1 className="text-3xl font-extrabold text-[#111] mb-1 font-syne">
           {pending.brand.charAt(0).toUpperCase() + pending.brand.slice(1)} — {pending.model}
@@ -82,8 +97,31 @@ export default function UploadPage() {
         <p className="text-sm text-[#888]">Upload at least 5 required photos. More angles = more accurate results.</p>
       </div>
 
+      {/* Reference Images Panel */}
+      {referenceImages.length > 0 && (
+        <div className="bg-white border border-[#e8e8e3] rounded-xl p-4 mb-6">
+          <p className="text-[10px] text-[#aaa] uppercase tracking-widest font-syne mb-3">
+            ✓ Authentic Reference · Compare your photos against these
+          </p>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {referenceImages.map((url, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                src={url}
+                alt={`Authentic reference ${i + 1}`}
+                className="h-28 w-28 object-cover rounded-lg flex-shrink-0 border border-[#e8e8e3]"
+              />
+            ))}
+          </div>
+          <p className="text-[9px] text-[#ccc] mt-2">
+            These are official product images of the authentic {pending.model}. Your photos should match these closely.
+          </p>
+        </div>
+      )}
+
       {/* Progress */}
-      <div className="bg-white border border-[#e8e8e3] rounded-xl p-4 mb-8">
+      <div className="bg-white border border-[#e8e8e3] rounded-xl p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-[#aaa] uppercase tracking-widest font-syne">Required: {requiredDoneCount}/{requiredCount}</span>
           <span className="text-xs text-[#aaa]">{totalDone}/{ANGLES.length} total</span>
@@ -99,6 +137,7 @@ export default function UploadPage() {
         )}
       </div>
 
+      {/* Upload grid */}
       <div className="grid grid-cols-2 gap-3 mb-8">
         {ANGLES.map((angle) => (
           <AngleSlot

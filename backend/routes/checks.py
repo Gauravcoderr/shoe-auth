@@ -7,6 +7,7 @@ from config.database import get_db
 from middleware.auth_middleware import get_optional_user, get_current_user
 from models.auth_check import CreateCheckRequest
 from controllers.check_controller import run_analysis
+from lib.reference_fetcher import fetch_reference_images
 
 router = APIRouter(prefix="/checks", tags=["checks"])
 
@@ -14,6 +15,13 @@ router = APIRouter(prefix="/checks", tags=["checks"])
 def serialize_check(check: dict) -> dict:
     check["id"] = str(check.pop("_id"))
     return check
+
+
+@router.get("/reference-images")
+async def get_reference_images(brand: str, model: str, colorway: str = ""):
+    """Return cached reference images for a given brand/model/colorway."""
+    images = await fetch_reference_images(brand=brand, model=model, colorway=colorway)
+    return {"images": [img["url"] for img in images]}
 
 
 @router.post("")
