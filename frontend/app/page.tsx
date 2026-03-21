@@ -1,6 +1,8 @@
 import HeroSection from "@/components/home/HeroSection";
 import HowItWorks from "@/components/home/HowItWorks";
+import OurProcess from "@/components/home/OurProcess";
 import BrandGrid from "@/components/home/BrandGrid";
+import TrustCounter from "@/components/home/TrustCounter";
 import CheckStats from "@/components/home/CheckStats";
 
 export default function Home() {
@@ -8,7 +10,9 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroSection />
       <HowItWorks />
+      <OurProcess />
       <BrandGrid />
+      <TrustCounter />
       <CheckStats />
     </div>
   );

@@ -2,11 +2,17 @@
 import { AuthCheck } from "@/types";
 import VerdictBadge from "./VerdictBadge";
 import CheckItemRow from "./CheckItemRow";
+import AuthCertificate from "./AuthCertificate";
 import Link from "next/link";
 
 interface Props {
   check: AuthCheck;
 }
+
+const BRAND_GUIDE_SLUGS: Record<string, string> = {
+  nike: "nike", jordan: "jordan", adidas: "adidas", yeezy: "yeezy",
+  new_balance: "new-balance", puma: "puma", reebok: "reebok", asics: "asics",
+};
 
 function groupByCategory(results: AuthCheck["results"]) {
   const groups: Record<string, AuthCheck["results"]> = {};
@@ -44,7 +50,13 @@ export default function ResultsCard({ check }: Props) {
         </div>
       )}
 
-      <div className="flex gap-3 mt-6 mb-8">
+      {/* Certificate — only for authentic */}
+      {check.overall_verdict === "authentic" && (
+        <AuthCertificate check={check} />
+      )}
+
+      {/* Stats */}
+      <div className="flex gap-3 mt-6 mb-6">
         <div className="flex-1 bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-4 text-center">
           <div className="text-2xl font-extrabold text-[#16a34a] font-syne">{passCount}</div>
           <div className="text-[10px] text-[#16a34a]/70 uppercase tracking-wider mt-0.5">Passed</div>
@@ -59,6 +71,34 @@ export default function ResultsCard({ check }: Props) {
         </div>
       </div>
 
+      {/* Expert tips callout */}
+      {failCount > 0 && (
+        <div className="mb-8 p-5 bg-[#fffbeb] border border-[#fde68a] rounded-xl">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 bg-[#fde68a] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-[#d97706] text-sm font-bold">!</span>
+            </div>
+            <div>
+              <p className="text-sm font-bold text-[#111] mb-1 font-syne">
+                Our AI found {failCount} issue{failCount !== 1 ? "s" : ""}
+              </p>
+              <p className="text-sm text-[#888] leading-relaxed mb-3">
+                Here&apos;s what to look for when buying this shoe second-hand.
+              </p>
+              {BRAND_GUIDE_SLUGS[check.brand] && (
+                <Link
+                  href={`/guides/${BRAND_GUIDE_SLUGS[check.brand]}`}
+                  className="text-xs font-bold text-[#d97706] hover:text-[#b45309] transition-colors uppercase tracking-wider font-syne"
+                >
+                  View {check.brand.replace("_", " ")} fake detection guide →
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Results by category */}
       <div className="space-y-4">
         {Object.entries(groups).map(([category, results]) => {
           const catFails = results.filter(r => r.result === "fail").length;
@@ -98,11 +138,7 @@ export default function ResultsCard({ check }: Props) {
         <Link href="/check" className="flex-1 text-center btn-outline py-3 text-sm">
           Check another pair
         </Link>
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="flex-1 btn-primary text-center py-3 text-sm"
-        >
+        <button type="button" onClick={() => window.print()} className="flex-1 btn-primary text-center py-3 text-sm">
           Save / Print report
         </button>
       </div>

@@ -1,25 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const BRANDS = [
-  { name: "Nike", slug: "nike" },
-  { name: "Air Jordan", slug: "jordan" },
-  { name: "Adidas", slug: "adidas" },
-  { name: "Yeezy", slug: "yeezy" },
-  { name: "New Balance", slug: "new_balance" },
-  { name: "Puma", slug: "puma" },
-  { name: "Reebok", slug: "reebok" },
-  { name: "Asics", slug: "asics" },
+  { name: "Nike", slug: "nike", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80" },
+  { name: "Air Jordan", slug: "jordan", img: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=300&q=80" },
+  { name: "Adidas", slug: "adidas", img: "https://images.unsplash.com/photo-1555274175-6cbf6f3b137b?w=300&q=80" },
+  { name: "Yeezy", slug: "yeezy", img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300&q=80" },
+  { name: "New Balance", slug: "new_balance", img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=300&q=80" },
+  { name: "Puma", slug: "puma", img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=300&q=80" },
+  { name: "Reebok", slug: "reebok", img: "https://images.unsplash.com/photo-1584735175315-9d5df23be620?w=300&q=80" },
+  { name: "Asics", slug: "asics", img: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=300&q=80" },
 ];
-
-function ShoeIcon() {
-  return (
-    <svg width="32" height="22" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 22c0 0 2-10 8-12s10 2 14 2 10-4 14-2 4 8 4 10c0 3-2 4-4 4H6c-2 0-2-2-2-2z" fill="#f0f0ec" stroke="#ddd" strokeWidth="1.5"/>
-      <path d="M12 10c0 0 4-6 10-6s8 4 8 6" stroke="#ddd" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M8 18c4 0 8-2 12-2s8 2 12 2" stroke="#ddd" strokeWidth="1" strokeLinecap="round"/>
-    </svg>
-  );
-}
 
 export default function BrandGrid() {
   return (
@@ -34,13 +25,21 @@ export default function BrandGrid() {
           <Link
             key={brand.slug}
             href={`/check?brand=${brand.slug}`}
-            className="group bg-white border border-[#e8e8e3] rounded-xl p-5 text-center hover:border-[#111] hover:shadow-sm transition-all"
+            className="group bg-white border border-[#e8e8e3] rounded-xl overflow-hidden hover:border-[#111] hover:shadow-sm transition-all"
           >
-            <div className="flex justify-center mb-3 opacity-60 group-hover:opacity-100 transition-opacity">
-              <ShoeIcon />
+            <div className="relative w-full h-28 bg-[#f7f7f4] overflow-hidden">
+              <Image
+                src={brand.img}
+                alt={brand.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 50vw, 25vw"
+              />
             </div>
-            <div className="font-extrabold text-[#111] text-sm font-syne">{brand.name}</div>
-            <div className="text-xs text-[#16a34a] mt-1 font-medium">✓ Supported</div>
+            <div className="p-4">
+              <div className="font-extrabold text-[#111] text-sm font-syne">{brand.name}</div>
+              <div className="text-xs text-[#16a34a] mt-1 font-medium">✓ Supported</div>
+            </div>
           </Link>
         ))}
       </div>

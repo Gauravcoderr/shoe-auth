@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getFreesRemaining } from "@/lib/freeCheckTracker";
 
@@ -10,25 +11,15 @@ const VERDICTS = [
 ];
 
 const MARQUEE_ITEMS = [
-  { brand: "Air Jordan 1", colorway: "Chicago", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  { brand: "Yeezy 350 V2", colorway: "Zebra", verdict: "FAKE", color: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
-  { brand: "Nike Dunk Low", colorway: "Panda", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  { brand: "Adidas Samba", colorway: "Black/White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  { brand: "Air Jordan 4", colorway: "Bred", verdict: "FAKE", color: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
-  { brand: "New Balance 550", colorway: "White/Green", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
-  { brand: "Yeezy 700", colorway: "Wave Runner", verdict: "INCONCLUSIVE", color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
-  { brand: "Nike AF1", colorway: "Triple White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+  { brand: "Air Jordan 1", colorway: "Chicago", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" },
+  { brand: "Yeezy 350 V2", colorway: "Zebra", verdict: "FAKE", color: "#dc2626", bg: "#fef2f2", border: "#fecaca", img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80" },
+  { brand: "Nike Dunk Low", colorway: "Panda", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=400&q=80" },
+  { brand: "Adidas Samba", colorway: "Black/White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1555274175-6cbf6f3b137b?w=400&q=80" },
+  { brand: "Air Jordan 4", colorway: "Bred", verdict: "FAKE", color: "#dc2626", bg: "#fef2f2", border: "#fecaca", img: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=400&q=80" },
+  { brand: "New Balance 550", colorway: "White/Green", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80" },
+  { brand: "Yeezy 700", colorway: "Wave Runner", verdict: "INCONCLUSIVE", color: "#d97706", bg: "#fffbeb", border: "#fde68a", img: "https://images.unsplash.com/photo-1584735175315-9d5df23be620?w=400&q=80" },
+  { brand: "Nike AF1", colorway: "Triple White", verdict: "AUTHENTIC", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0", img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&q=80" },
 ];
-
-function ShoeIcon({ size = 28 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 22c0 0 2-10 8-12s10 2 14 2 10-4 14-2 4 8 4 10c0 3-2 4-4 4H6c-2 0-2-2-2-2z" fill="#e8e8e3" stroke="#ccc" strokeWidth="1.5"/>
-      <path d="M12 10c0 0 4-6 10-6s8 4 8 6" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M8 18c4 0 8-2 12-2s8 2 12 2" stroke="#bbb" strokeWidth="1" strokeLinecap="round"/>
-    </svg>
-  );
-}
 
 export default function HeroSection() {
   const [verdictIdx, setVerdictIdx] = useState(0);
@@ -85,19 +76,27 @@ export default function HeroSection() {
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-52 bg-white border border-[#e8e8e3] rounded-xl p-4 shadow-sm"
+              className="flex-shrink-0 w-52 bg-white border border-[#e8e8e3] rounded-xl overflow-hidden shadow-sm"
             >
-              <div className="flex items-center justify-between mb-3">
-                <ShoeIcon size={32} />
+              <div className="relative w-full h-28 bg-[#f7f7f4]">
+                <Image
+                  src={item.img}
+                  alt={item.brand}
+                  fill
+                  className="object-cover"
+                  sizes="208px"
+                />
                 <span
-                  className="text-[10px] font-extrabold px-2.5 py-1 rounded-full tracking-widest font-syne border"
-                  style={{ backgroundColor: item.bg, color: item.color, borderColor: item.border || "#e8e8e3" }}
+                  className="absolute top-2 right-2 text-[9px] font-extrabold px-2 py-0.5 rounded-full tracking-widest font-syne border"
+                  style={{ backgroundColor: item.bg, color: item.color, borderColor: item.border }}
                 >
                   {item.verdict}
                 </span>
               </div>
-              <p className="text-xs font-bold text-[#111] font-syne">{item.brand}</p>
-              <p className="text-[11px] text-[#aaa] mt-0.5">{item.colorway}</p>
+              <div className="p-3">
+                <p className="text-xs font-bold text-[#111] font-syne">{item.brand}</p>
+                <p className="text-[11px] text-[#aaa] mt-0.5">{item.colorway}</p>
+              </div>
             </div>
           ))}
         </div>
