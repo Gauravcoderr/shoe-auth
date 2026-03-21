@@ -72,37 +72,33 @@ export default function UploadPage() {
   if (!pending) return null;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="mb-8">
-        <p className="text-xs text-[#555] uppercase tracking-widest mb-2">Upload Photos</p>
-        <h1 className="text-2xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--font-syne)" }}>
+    <div className="max-w-2xl mx-auto px-5 py-14">
+      <div className="mb-10">
+        <p className="text-xs text-[#bbb] uppercase tracking-widest mb-3 font-syne">Upload Photos</p>
+        <h1 className="text-3xl font-extrabold text-[#111] mb-1 font-syne">
           {pending.brand.charAt(0).toUpperCase() + pending.brand.slice(1)} — {pending.model}
-          {pending.colorway && <span className="text-[#555]"> ({pending.colorway})</span>}
+          {pending.colorway && <span className="text-[#aaa] font-normal"> ({pending.colorway})</span>}
         </h1>
-        <p className="text-sm text-[#555]">Upload at least 5 required photos. More angles = more accurate results.</p>
+        <p className="text-sm text-[#888]">Upload at least 5 required photos. More angles = more accurate results.</p>
       </div>
 
       {/* Progress */}
-      <div className="bg-[#111] border border-[#1f1f1f] rounded-xl p-4 mb-8">
+      <div className="bg-white border border-[#e8e8e3] rounded-xl p-4 mb-8">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-[#555] uppercase tracking-widest">
-            Required: {requiredDoneCount}/{requiredCount}
-          </span>
-          <span className="text-xs text-[#555]">{totalDone}/{ANGLES.length} total</span>
+          <span className="text-xs text-[#aaa] uppercase tracking-widest font-syne">Required: {requiredDoneCount}/{requiredCount}</span>
+          <span className="text-xs text-[#aaa]">{totalDone}/{ANGLES.length} total</span>
         </div>
-        <div className="w-full bg-[#1a1a1a] rounded-full h-1">
+        <div className="w-full bg-[#f0f0ec] rounded-full h-1.5">
           <div
-            className="bg-[#22c55e] h-1 rounded-full transition-all duration-500"
+            className="bg-[#16a34a] h-1.5 rounded-full transition-all duration-500"
             style={{ width: `${(requiredDoneCount / requiredCount) * 100}%` }}
           />
         </div>
         {requiredDone && (
-          <p className="text-xs text-[#22c55e] font-semibold mt-2">✓ Ready to submit</p>
+          <p className="text-xs text-[#16a34a] font-semibold mt-2">✓ Ready to submit</p>
         )}
       </div>
 
-      {/* Photo grid */}
       <div className="grid grid-cols-2 gap-3 mb-8">
         {ANGLES.map((angle) => (
           <AngleSlot
@@ -115,19 +111,18 @@ export default function UploadPage() {
         ))}
       </div>
 
-      {error && <p className="text-[#ef4444] text-sm mb-4">{error}</p>}
+      {error && <p className="text-[#dc2626] text-sm mb-4">{error}</p>}
 
       <button
         type="button"
         onClick={handleSubmit}
         disabled={!requiredDone || submitting}
-        className="w-full bg-white text-black py-4 rounded-xl font-extrabold hover:bg-[#e5e5e5] transition-colors disabled:opacity-30 text-sm"
-        style={{ fontFamily: "var(--font-syne)" }}
+        className="btn-primary w-full text-center"
       >
         {submitting ? "Submitting..." : `Analyze ${totalDone} photo${totalDone !== 1 ? "s" : ""} →`}
       </button>
 
-      <p className="text-center text-xs text-[#333] mt-4">
+      <p className="text-center text-xs text-[#ccc] mt-4">
         5 required angles minimum · Better lighting = better accuracy
       </p>
     </div>

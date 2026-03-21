@@ -22,15 +22,11 @@ export default function ResultsPage() {
 
   if (error) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+      <div className="max-w-2xl mx-auto px-5 py-24 text-center">
         <div className="text-4xl mb-4">⚠️</div>
-        <h2 className="text-xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
-          Could not load results
-        </h2>
-        <p className="text-[#555] text-sm mb-6">{(error as Error).message}</p>
-        <Link href="/check" className="text-sm text-[#888] hover:text-white transition-colors">
-          ← Try again
-        </Link>
+        <h2 className="text-xl font-extrabold text-[#111] mb-2 font-syne">Could not load results</h2>
+        <p className="text-[#888] text-sm mb-6">{(error as Error).message}</p>
+        <Link href="/check" className="text-sm text-[#aaa] hover:text-[#111] transition-colors">← Try again</Link>
       </div>
     );
   }
@@ -41,22 +37,13 @@ export default function ResultsPage() {
 
   if (check.processing_status === "failed") {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-        <div className="w-16 h-16 bg-[#ef4444]/10 border border-[#ef4444]/20 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl">
+      <div className="max-w-2xl mx-auto px-5 py-24 text-center">
+        <div className="w-16 h-16 bg-[#fef2f2] border border-[#fecaca] rounded-full flex items-center justify-center mx-auto mb-5 text-xl text-[#dc2626]">
           ✗
         </div>
-        <h2 className="text-xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
-          Analysis failed
-        </h2>
-        <p className="text-[#555] text-sm mb-6">
-          Our AI service is temporarily unavailable. Please try again in a few minutes.
-        </p>
-        <Link
-          href="/check"
-          className="inline-block bg-white text-black px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#e5e5e5] transition-colors"
-        >
-          Try again →
-        </Link>
+        <h2 className="text-xl font-extrabold text-[#111] mb-2 font-syne">Analysis failed</h2>
+        <p className="text-[#888] text-sm mb-6">Our AI service is temporarily unavailable. Please try again in a few minutes.</p>
+        <Link href="/check" className="btn-primary inline-block px-8 py-3 text-sm">Try again →</Link>
       </div>
     );
   }

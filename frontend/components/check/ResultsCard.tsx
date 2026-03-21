@@ -24,55 +24,50 @@ export default function ResultsCard({ check }: Props) {
   const warnCount = check.results.filter(r => r.result === "warning").length;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
-      {/* Header */}
+    <div className="max-w-2xl mx-auto px-5 py-14">
       <div className="mb-6">
-        <p className="text-xs text-[#555] uppercase tracking-widest mb-1">Authentication Result</p>
-        <h1 className="text-2xl font-extrabold text-white" style={{ fontFamily: "var(--font-syne)" }}>
+        <p className="text-xs text-[#bbb] uppercase tracking-widest mb-2 font-syne">Authentication Result</p>
+        <h1 className="text-3xl font-extrabold text-[#111] font-syne">
           {check.brand.charAt(0).toUpperCase() + check.brand.slice(1)} — {check.model}
-          {check.colorway && <span className="text-[#555]"> ({check.colorway})</span>}
+          {check.colorway && <span className="text-[#aaa] font-normal"> ({check.colorway})</span>}
         </h1>
       </div>
 
-      {/* Verdict */}
       <VerdictBadge
         verdict={check.overall_verdict as "authentic" | "fake" | "inconclusive" | "pending"}
         confidence={check.verdict_confidence}
       />
 
-      {/* Summary */}
       {check.verdict_summary && (
-        <div className="mt-4 p-4 bg-[#111] border border-[#1f1f1f] rounded-xl">
-          <p className="text-sm text-[#888] leading-relaxed">{check.verdict_summary}</p>
+        <div className="mt-4 p-4 bg-white border border-[#e8e8e3] rounded-xl shadow-sm">
+          <p className="text-sm text-[#666] leading-relaxed">{check.verdict_summary}</p>
         </div>
       )}
 
-      {/* Stats bar */}
       <div className="flex gap-3 mt-6 mb-8">
-        <div className="flex-1 bg-[#22c55e]/10 border border-[#22c55e]/20 rounded-xl p-4 text-center">
-          <div className="text-2xl font-extrabold text-[#22c55e]" style={{ fontFamily: "var(--font-syne)" }}>{passCount}</div>
-          <div className="text-[10px] text-[#22c55e]/70 uppercase tracking-wider mt-0.5">Passed</div>
+        <div className="flex-1 bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-4 text-center">
+          <div className="text-2xl font-extrabold text-[#16a34a] font-syne">{passCount}</div>
+          <div className="text-[10px] text-[#16a34a]/70 uppercase tracking-wider mt-0.5">Passed</div>
         </div>
-        <div className="flex-1 bg-[#f59e0b]/10 border border-[#f59e0b]/20 rounded-xl p-4 text-center">
-          <div className="text-2xl font-extrabold text-[#f59e0b]" style={{ fontFamily: "var(--font-syne)" }}>{warnCount}</div>
-          <div className="text-[10px] text-[#f59e0b]/70 uppercase tracking-wider mt-0.5">Warnings</div>
+        <div className="flex-1 bg-[#fffbeb] border border-[#fde68a] rounded-xl p-4 text-center">
+          <div className="text-2xl font-extrabold text-[#d97706] font-syne">{warnCount}</div>
+          <div className="text-[10px] text-[#d97706]/70 uppercase tracking-wider mt-0.5">Warnings</div>
         </div>
-        <div className="flex-1 bg-[#ef4444]/10 border border-[#ef4444]/20 rounded-xl p-4 text-center">
-          <div className="text-2xl font-extrabold text-[#ef4444]" style={{ fontFamily: "var(--font-syne)" }}>{failCount}</div>
-          <div className="text-[10px] text-[#ef4444]/70 uppercase tracking-wider mt-0.5">Failed</div>
+        <div className="flex-1 bg-[#fef2f2] border border-[#fecaca] rounded-xl p-4 text-center">
+          <div className="text-2xl font-extrabold text-[#dc2626] font-syne">{failCount}</div>
+          <div className="text-[10px] text-[#dc2626]/70 uppercase tracking-wider mt-0.5">Failed</div>
         </div>
       </div>
 
-      {/* Results by category */}
       <div className="space-y-4">
         {Object.entries(groups).map(([category, results]) => {
           const catFails = results.filter(r => r.result === "fail").length;
           return (
-            <div key={category} className="bg-[#111] border border-[#1f1f1f] rounded-xl overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-[#1a1a1a]">
-                <h3 className="font-bold text-sm text-white" style={{ fontFamily: "var(--font-syne)" }}>{category}</h3>
+            <div key={category} className="bg-white border border-[#e8e8e3] rounded-xl overflow-hidden shadow-sm">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0ec]">
+                <h3 className="font-bold text-sm text-[#111] font-syne">{category}</h3>
                 {catFails > 0 && (
-                  <span className="text-[10px] font-bold text-[#ef4444] bg-[#ef4444]/10 border border-[#ef4444]/20 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                  <span className="text-[10px] font-bold text-[#dc2626] bg-[#fef2f2] border border-[#fecaca] px-2 py-0.5 rounded-full uppercase tracking-wide font-syne">
                     {catFails} issue{catFails > 1 ? "s" : ""}
                   </span>
                 )}
@@ -85,13 +80,12 @@ export default function ResultsCard({ check }: Props) {
         })}
       </div>
 
-      {/* Photos */}
       {check.photos.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-xs font-bold text-[#555] uppercase tracking-widest mb-3">Submitted photos</h3>
+          <h3 className="text-xs font-bold text-[#bbb] uppercase tracking-widest mb-3 font-syne">Submitted photos</h3>
           <div className="grid grid-cols-4 gap-2">
             {check.photos.map(p => (
-              <div key={p.angle} className="aspect-square rounded-xl overflow-hidden bg-[#111] border border-[#1f1f1f]">
+              <div key={p.angle} className="aspect-square rounded-xl overflow-hidden bg-[#f0f0ec] border border-[#e8e8e3]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={p.url} alt={p.angle} className="w-full h-full object-cover" />
               </div>
@@ -100,17 +94,14 @@ export default function ResultsCard({ check }: Props) {
         </div>
       )}
 
-      {/* Actions */}
       <div className="flex gap-3 mt-8">
-        <Link
-          href="/check"
-          className="flex-1 text-center border border-[#222] text-[#888] py-3 rounded-xl text-sm font-semibold hover:border-[#333] hover:text-white transition-all"
-        >
+        <Link href="/check" className="flex-1 text-center btn-outline py-3 text-sm">
           Check another pair
         </Link>
         <button
-          type="button" onClick={() => window.print()}
-          className="flex-1 bg-white text-black py-3 rounded-xl text-sm font-bold hover:bg-[#e5e5e5] transition-colors"
+          type="button"
+          onClick={() => window.print()}
+          className="flex-1 btn-primary text-center py-3 text-sm"
         >
           Save / Print report
         </button>

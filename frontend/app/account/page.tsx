@@ -9,10 +9,10 @@ import AuthModal from "@/components/auth/AuthModal";
 import { useState } from "react";
 
 const VERDICT_STYLES: Record<string, string> = {
-  authentic: "text-[#22c55e] bg-[#22c55e]/10 border border-[#22c55e]/20",
-  fake: "text-[#ef4444] bg-[#ef4444]/10 border border-[#ef4444]/20",
-  inconclusive: "text-[#f59e0b] bg-[#f59e0b]/10 border border-[#f59e0b]/20",
-  pending: "text-[#555] bg-[#1a1a1a] border border-[#222]",
+  authentic: "text-[#16a34a] bg-[#f0fdf4] border border-[#bbf7d0]",
+  fake: "text-[#dc2626] bg-[#fef2f2] border border-[#fecaca]",
+  inconclusive: "text-[#d97706] bg-[#fffbeb] border border-[#fde68a]",
+  pending: "text-[#aaa] bg-[#f0f0ec] border border-[#e8e8e3]",
 };
 
 export default function AccountPage() {
@@ -26,23 +26,16 @@ export default function AccountPage() {
   });
 
   if (loading) return (
-    <div className="max-w-2xl mx-auto px-4 py-24 text-center text-[#444] text-sm">Loading...</div>
+    <div className="max-w-2xl mx-auto px-5 py-24 text-center text-[#aaa] text-sm">Loading...</div>
   );
 
   if (!user) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+      <div className="max-w-2xl mx-auto px-5 py-24 text-center">
         <div className="text-4xl mb-4">👟</div>
-        <h2 className="text-xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
-          Sign in to see your checks
-        </h2>
-        <p className="text-[#555] text-sm mb-6">Your authentication history is saved to your account.</p>
-        <button
-          type="button"
-          onClick={() => setShowAuth(true)}
-          className="bg-white text-black px-6 py-3 rounded-xl font-bold hover:bg-[#e5e5e5] transition-colors text-sm"
-          style={{ fontFamily: "var(--font-syne)" }}
-        >
+        <h2 className="text-xl font-extrabold text-[#111] mb-2 font-syne">Sign in to see your checks</h2>
+        <p className="text-[#888] text-sm mb-6">Your authentication history is saved to your account.</p>
+        <button type="button" onClick={() => setShowAuth(true)} className="btn-primary px-8 py-3 text-sm">
           Sign in
         </button>
         {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
@@ -53,26 +46,24 @@ export default function AccountPage() {
   const checks: AuthCheck[] = data?.checks || [];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
-      <div className="mb-8">
-        <p className="text-xs text-[#555] uppercase tracking-widest mb-2">History</p>
-        <h1 className="text-2xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--font-syne)" }}>
-          My checks
-        </h1>
-        <p className="text-[#555] text-sm">{user.email} · {checks.length} authentication{checks.length !== 1 ? "s" : ""}</p>
+    <div className="max-w-2xl mx-auto px-5 py-14">
+      <div className="mb-10">
+        <p className="text-xs text-[#bbb] uppercase tracking-widest mb-3 font-syne">History</p>
+        <h1 className="text-3xl font-extrabold text-[#111] mb-1 font-syne">My checks</h1>
+        <p className="text-[#aaa] text-sm">{user.email} · {checks.length} authentication{checks.length !== 1 ? "s" : ""}</p>
       </div>
 
       {isLoading ? (
         <div className="space-y-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-20 bg-[#111] border border-[#1f1f1f] rounded-xl animate-pulse" />
+            <div key={i} className="h-20 bg-white border border-[#e8e8e3] rounded-xl animate-pulse" />
           ))}
         </div>
       ) : checks.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-4xl mb-4">📦</div>
-          <p className="text-[#555] text-sm mb-3">No checks yet.</p>
-          <Link href="/check" className="text-white font-semibold text-sm hover:text-[#888] transition-colors">
+          <p className="text-[#aaa] text-sm mb-3">No checks yet.</p>
+          <Link href="/check" className="text-[#111] font-semibold text-sm hover:text-[#555] transition-colors">
             Check your first pair →
           </Link>
         </div>
@@ -82,17 +73,13 @@ export default function AccountPage() {
             <Link
               key={check.id}
               href={`/check/${check.id}/results`}
-              className="flex items-center gap-4 p-4 bg-[#111] border border-[#1f1f1f] rounded-xl hover:border-[#2a2a2a] hover:bg-[#161616] transition-all"
+              className="flex items-center gap-4 p-4 bg-white border border-[#e8e8e3] rounded-xl hover:border-[#bbb] hover:shadow-sm transition-all"
             >
               <div className="flex-1 min-w-0">
-                <div className="font-bold text-white text-sm truncate" style={{ fontFamily: "var(--font-syne)" }}>
-                  {check.model}
-                </div>
-                <div className="text-xs text-[#444] mt-0.5 capitalize">
-                  {check.brand} · {formatDate(check.created_at)}
-                </div>
+                <div className="font-bold text-[#111] text-sm truncate font-syne">{check.model}</div>
+                <div className="text-xs text-[#aaa] mt-0.5 capitalize">{check.brand} · {formatDate(check.created_at)}</div>
               </div>
-              <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide ${VERDICT_STYLES[check.overall_verdict] || VERDICT_STYLES.pending}`}>
+              <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wide font-syne ${VERDICT_STYLES[check.overall_verdict] || VERDICT_STYLES.pending}`}>
                 {check.overall_verdict}
               </span>
             </Link>

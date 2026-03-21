@@ -53,68 +53,64 @@ function CheckPage() {
     );
   }
 
+  const freesLeft = 3 - getFreeCheckCount();
+
   return (
     <>
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        {/* Header */}
+      <div className="max-w-2xl mx-auto px-5 py-14">
         <div className="mb-10">
-          <p className="text-xs text-[#555] uppercase tracking-widest mb-2">Authentication</p>
-          <h1 className="text-3xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
-            Check your sneakers
-          </h1>
-          <p className="text-[#666] text-sm">
+          <p className="text-xs text-[#bbb] uppercase tracking-widest mb-3 font-syne">Authentication</p>
+          <h1 className="text-4xl font-extrabold text-[#111] mb-2 font-syne">Check your sneakers</h1>
+          <p className="text-[#888] text-sm">
             Select the brand and model, then upload photos from guided angles.
-            {!user && (
-              <span className="text-[#22c55e] font-semibold">
-                {" "}{3 - getFreeCheckCount()} free check{3 - getFreeCheckCount() !== 1 ? "s" : ""} remaining.
-              </span>
+            {!user && freesLeft > 0 && (
+              <span className="text-[#16a34a] font-semibold"> {freesLeft} free check{freesLeft !== 1 ? "s" : ""} remaining.</span>
             )}
           </p>
         </div>
 
-        {/* Step 1 */}
-        <div className="mb-8">
-          <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">Step 01 — Brand</p>
-          <BrandSelector selected={brand} onSelect={setBrand} />
+        <div className="space-y-8">
+          <div>
+            <p className="text-[10px] font-bold text-[#bbb] mb-3 uppercase tracking-widest font-syne">Step 01 — Brand</p>
+            <BrandSelector selected={brand} onSelect={setBrand} />
+          </div>
+
+          {brand && (
+            <div>
+              <p className="text-[10px] font-bold text-[#bbb] mb-3 uppercase tracking-widest font-syne">Step 02 — Model</p>
+              <input
+                list="models-list"
+                value={model}
+                onChange={e => setModel(e.target.value)}
+                placeholder="e.g. Air Jordan 1 Retro High OG"
+                className="input-field"
+              />
+              <datalist id="models-list">
+                {models.map(m => <option key={m} value={m} />)}
+              </datalist>
+            </div>
+          )}
+
+          {model && (
+            <div>
+              <p className="text-[10px] font-bold text-[#bbb] mb-3 uppercase tracking-widest font-syne">
+                Step 03 — Colorway <span className="text-[#ccc] normal-case font-normal">(optional)</span>
+              </p>
+              <input
+                value={colorway}
+                onChange={e => setColorway(e.target.value)}
+                placeholder="e.g. Chicago, University Blue, Bred..."
+                className="input-field"
+              />
+            </div>
+          )}
         </div>
-
-        {/* Step 2 */}
-        {brand && (
-          <div className="mb-8">
-            <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">Step 02 — Model</p>
-            <input
-              list="models-list"
-              value={model}
-              onChange={e => setModel(e.target.value)}
-              placeholder="e.g. Air Jordan 1 Retro High OG"
-              className="input-dark"
-            />
-            <datalist id="models-list">
-              {models.map(m => <option key={m} value={m} />)}
-            </datalist>
-          </div>
-        )}
-
-        {/* Step 3 */}
-        {model && (
-          <div className="mb-8">
-            <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">
-              Step 03 — Colorway <span className="text-[#333] normal-case font-normal">(optional)</span>
-            </p>
-            <input
-              value={colorway}
-              onChange={e => setColorway(e.target.value)}
-              placeholder="e.g. Chicago, University Blue, Bred..."
-              className="input-dark"
-            />
-          </div>
-        )}
 
         <button
           type="button"
           onClick={handleContinue}
           disabled={!brand || !model || loading}
-          className="w-full bg-white text-black py-4 rounded-xl font-extrabold hover:bg-[#e5e5e5] transition-colors disabled:opacity-30 text-sm font-syne"
+          className="btn-primary w-full mt-10 text-center"
         >
           {loading ? "Starting..." : "Upload photos →"}
         </button>

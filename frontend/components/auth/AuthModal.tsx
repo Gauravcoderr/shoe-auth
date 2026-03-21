@@ -48,21 +48,21 @@ export default function AuthModal({ onClose, onSuccess }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#111] border border-[#222] rounded-2xl p-8 w-full max-w-sm mx-4 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white border border-[#e8e8e3] rounded-2xl p-8 w-full max-w-sm mx-4 relative shadow-xl">
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#444] hover:text-[#888] text-xl transition-colors"
+          className="absolute top-4 right-4 text-[#bbb] hover:text-[#666] text-xl transition-colors"
         >
           ×
         </button>
 
         <div className="mb-6">
-          <h2 className="text-xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--font-syne)" }}>
+          <h2 className="text-xl font-extrabold text-[#111] mb-1 font-syne">
             {step === "email" ? "Sign in to SneakerAuth" : "Enter your code"}
           </h2>
-          <p className="text-sm text-[#555]">
+          <p className="text-sm text-[#888]">
             {step === "email"
               ? "No password needed — we'll email you a code"
               : `We sent a 6-digit code to ${email}`}
@@ -74,14 +74,10 @@ export default function AuthModal({ onClose, onSuccess }: Props) {
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="your@email.com" required autoFocus
-              className="input-dark"
+              className="input-field"
             />
-            {error && <p className="text-[#ef4444] text-sm">{error}</p>}
-            <button
-              type="submit" disabled={loading}
-              className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-[#e5e5e5] transition-colors disabled:opacity-40"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
+            {error && <p className="text-[#dc2626] text-sm">{error}</p>}
+            <button type="submit" disabled={loading} className="btn-primary w-full">
               {loading ? "Sending..." : "Send code"}
             </button>
           </form>
@@ -90,24 +86,20 @@ export default function AuthModal({ onClose, onSuccess }: Props) {
             <input
               type="text" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
               placeholder="123456" maxLength={6} required autoFocus
-              className="input-dark text-2xl tracking-[0.5em] text-center font-mono"
+              className="input-field text-2xl tracking-[0.5em] text-center font-mono"
             />
-            {error && <p className="text-[#ef4444] text-sm">{error}</p>}
-            <button
-              type="submit" disabled={loading || otp.length < 6}
-              className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-[#e5e5e5] transition-colors disabled:opacity-40"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
+            {error && <p className="text-[#dc2626] text-sm">{error}</p>}
+            <button type="submit" disabled={loading || otp.length < 6} className="btn-primary w-full">
               {loading ? "Verifying..." : "Verify code"}
             </button>
             <div className="text-center">
               {cooldown > 0 ? (
-                <p className="text-sm text-[#444]">Resend in {cooldown}s</p>
+                <p className="text-sm text-[#bbb]">Resend in {cooldown}s</p>
               ) : (
                 <button
                   type="button"
                   onClick={() => { setStep("email"); setOtp(""); setError(""); }}
-                  className="text-sm text-[#555] hover:text-[#888] transition-colors"
+                  className="text-sm text-[#888] hover:text-[#333] transition-colors"
                 >
                   Resend code
                 </button>
