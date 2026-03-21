@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     MONGODB_URI: str = "mongodb://localhost:27017"
     JWT_SECRET: str = "shoe-auth-jwt-secret-change-this"
     GEMINI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
     FRONTEND_URL: str = "http://localhost:3000"
     GMAIL_USER: str = ""
     GMAIL_APP_PASSWORD: str = ""
