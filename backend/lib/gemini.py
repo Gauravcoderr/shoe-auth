@@ -106,7 +106,7 @@ async def _analyze_with_groq(
                 model=GROQ_MODEL,
                 messages=[{"role": "user", "content": content}],
                 temperature=0.1,
-                max_tokens=16384,
+                max_tokens=8192,
             )
             return _parse_json(response.choices[0].message.content)
         except Exception as e:
