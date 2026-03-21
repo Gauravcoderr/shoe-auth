@@ -1,35 +1,36 @@
 import Link from "next/link";
 
 const BRANDS = [
-  { name: "Nike", slug: "nike", emoji: "✔" },
-  { name: "Air Jordan", slug: "jordan", emoji: "✔" },
-  { name: "Adidas", slug: "adidas", emoji: "✔" },
-  { name: "Yeezy", slug: "yeezy", emoji: "✔" },
-  { name: "New Balance", slug: "new_balance", emoji: "✔" },
-  { name: "Puma", slug: "puma", emoji: "✔" },
-  { name: "Reebok", slug: "reebok", emoji: "✔" },
-  { name: "Asics", slug: "asics", emoji: "✔" },
+  { name: "Nike", slug: "nike" },
+  { name: "Air Jordan", slug: "jordan" },
+  { name: "Adidas", slug: "adidas" },
+  { name: "Yeezy", slug: "yeezy" },
+  { name: "New Balance", slug: "new_balance" },
+  { name: "Puma", slug: "puma" },
+  { name: "Reebok", slug: "reebok" },
+  { name: "Asics", slug: "asics" },
 ];
 
 export default function BrandGrid() {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-16 border-t border-gray-100">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-3">
-        Supported brands
-      </h2>
-      <p className="text-center text-gray-500 text-sm mb-10">
-        Brand-specific fake indicators + model-level authentication checks
-      </p>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <section className="max-w-6xl mx-auto px-4 py-20 border-t border-[#1a1a1a]">
+      <div className="text-center mb-12">
+        <p className="text-xs text-[#555] uppercase tracking-widest mb-3">Coverage</p>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3" style={{ fontFamily: "var(--font-syne)" }}>
+          Supported brands
+        </h2>
+        <p className="text-[#555] text-sm">Brand-specific fake indicators + model-level authentication checks</p>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {BRANDS.map((brand) => (
           <Link
             key={brand.slug}
             href={`/check?brand=${brand.slug}`}
-            className="border border-gray-200 rounded-2xl p-5 text-center hover:border-gray-400 hover:shadow-sm transition-all group"
+            className="group bg-[#111] border border-[#1f1f1f] rounded-xl p-5 text-center hover:border-[#2a2a2a] hover:bg-[#161616] transition-all"
           >
-            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">👟</div>
-            <div className="font-semibold text-gray-900 text-sm">{brand.name}</div>
-            <div className="text-xs text-green-500 mt-1">{brand.emoji} Supported</div>
+            <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-200">👟</div>
+            <div className="font-bold text-white text-sm mb-1" style={{ fontFamily: "var(--font-syne)" }}>{brand.name}</div>
+            <div className="text-xs text-[#22c55e]">✓ Supported</div>
           </Link>
         ))}
       </div>

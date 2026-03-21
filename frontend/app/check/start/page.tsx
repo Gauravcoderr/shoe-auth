@@ -20,7 +20,7 @@ const ANGLES = [
 export default function UploadPage() {
   const router = useRouter();
   const [pending, setPending] = useState<{ brand: string; model: string; colorway: string } | null>(null);
-  const [photos, setPhotos] = useState<Record<string, string>>({}); // angleId → cloudinary url
+  const [photos, setPhotos] = useState<Record<string, string>>({});
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ export default function UploadPage() {
     const data = sessionStorage.getItem("pending_check");
     if (!data) { router.push("/check"); return; }
     setPending(JSON.parse(data));
-  }, []);
+  }, [router]);
 
   const handleFile = async (angleId: string, file: File) => {
     setUploading(u => ({ ...u, [angleId]: true }));
@@ -46,6 +46,8 @@ export default function UploadPage() {
 
   const requiredDone = ANGLES.filter(a => a.required).every(a => photos[a.id]);
   const totalDone = Object.keys(photos).length;
+  const requiredCount = ANGLES.filter(a => a.required).length;
+  const requiredDoneCount = ANGLES.filter(a => a.required && photos[a.id]).length;
 
   const handleSubmit = async () => {
     if (!pending || !requiredDone) return;
@@ -71,31 +73,37 @@ export default function UploadPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
-      <div className="mb-6">
-        <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Authenticating</div>
-        <h1 className="text-xl font-bold text-gray-900">
+      {/* Header */}
+      <div className="mb-8">
+        <p className="text-xs text-[#555] uppercase tracking-widest mb-2">Upload Photos</p>
+        <h1 className="text-2xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--font-syne)" }}>
           {pending.brand.charAt(0).toUpperCase() + pending.brand.slice(1)} — {pending.model}
-          {pending.colorway && <span className="text-gray-500"> ({pending.colorway})</span>}
+          {pending.colorway && <span className="text-[#555]"> ({pending.colorway})</span>}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Upload at least 5 required photos. More angles = more accurate results.
-        </p>
+        <p className="text-sm text-[#555]">Upload at least 5 required photos. More angles = more accurate results.</p>
       </div>
 
       {/* Progress */}
-      <div className="flex items-center gap-3 mb-8 p-3 bg-gray-50 rounded-xl">
-        <div className="flex-1 bg-gray-200 rounded-full h-2">
+      <div className="bg-[#111] border border-[#1f1f1f] rounded-xl p-4 mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-[#555] uppercase tracking-widest">
+            Required: {requiredDoneCount}/{requiredCount}
+          </span>
+          <span className="text-xs text-[#555]">{totalDone}/{ANGLES.length} total</span>
+        </div>
+        <div className="w-full bg-[#1a1a1a] rounded-full h-1">
           <div
-            className="bg-green-500 h-2 rounded-full transition-all"
-            style={{ width: `${(totalDone / ANGLES.length) * 100}%` }}
+            className="bg-[#22c55e] h-1 rounded-full transition-all duration-500"
+            style={{ width: `${(requiredDoneCount / requiredCount) * 100}%` }}
           />
         </div>
-        <span className="text-xs text-gray-500 whitespace-nowrap">{totalDone}/{ANGLES.length} photos</span>
-        {requiredDone && <span className="text-xs text-green-600 font-semibold">Ready to submit</span>}
+        {requiredDone && (
+          <p className="text-xs text-[#22c55e] font-semibold mt-2">✓ Ready to submit</p>
+        )}
       </div>
 
       {/* Photo grid */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-2 gap-3 mb-8">
         {ANGLES.map((angle) => (
           <AngleSlot
             key={angle.id}
@@ -107,18 +115,20 @@ export default function UploadPage() {
         ))}
       </div>
 
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      {error && <p className="text-[#ef4444] text-sm mb-4">{error}</p>}
 
       <button
+        type="button"
         onClick={handleSubmit}
         disabled={!requiredDone || submitting}
-        className="w-full bg-gray-900 text-white py-4 rounded-2xl font-semibold hover:bg-gray-700 transition-colors disabled:opacity-40"
+        className="w-full bg-white text-black py-4 rounded-xl font-extrabold hover:bg-[#e5e5e5] transition-colors disabled:opacity-30 text-sm"
+        style={{ fontFamily: "var(--font-syne)" }}
       >
         {submitting ? "Submitting..." : `Analyze ${totalDone} photo${totalDone !== 1 ? "s" : ""} →`}
       </button>
 
-      <p className="text-center text-xs text-gray-400 mt-4">
-        * 5 required photos minimum. Better lighting = better accuracy.
+      <p className="text-center text-xs text-[#333] mt-4">
+        5 required angles minimum · Better lighting = better accuracy
       </p>
     </div>
   );

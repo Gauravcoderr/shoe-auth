@@ -48,36 +48,39 @@ export default function AuthModal({ onClose, onSuccess }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      <div className="bg-[#111] border border-[#222] rounded-2xl p-8 w-full max-w-sm mx-4 relative">
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl"
+          className="absolute top-4 right-4 text-[#444] hover:text-[#888] text-xl transition-colors"
         >
           ×
         </button>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
-          {step === "email" ? "Sign in to SneakerAuth" : "Enter your code"}
-        </h2>
-        <p className="text-sm text-gray-500 mb-6">
-          {step === "email"
-            ? "No password needed — we'll email you a code"
-            : `We sent a 6-digit code to ${email}`}
-        </p>
+        <div className="mb-6">
+          <h2 className="text-xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--font-syne)" }}>
+            {step === "email" ? "Sign in to SneakerAuth" : "Enter your code"}
+          </h2>
+          <p className="text-sm text-[#555]">
+            {step === "email"
+              ? "No password needed — we'll email you a code"
+              : `We sent a 6-digit code to ${email}`}
+          </p>
+        </div>
 
         {step === "email" ? (
           <form onSubmit={sendOtp} className="space-y-4">
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder="your@email.com" required autoFocus
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="input-dark"
             />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && <p className="text-[#ef4444] text-sm">{error}</p>}
             <button
               type="submit" disabled={loading}
-              className="w-full bg-gray-900 text-white py-3 rounded-xl font-medium hover:bg-gray-700 transition-colors disabled:opacity-60"
+              className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-[#e5e5e5] transition-colors disabled:opacity-40"
+              style={{ fontFamily: "var(--font-syne)" }}
             >
               {loading ? "Sending..." : "Send code"}
             </button>
@@ -87,23 +90,24 @@ export default function AuthModal({ onClose, onSuccess }: Props) {
             <input
               type="text" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
               placeholder="123456" maxLength={6} required autoFocus
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-2xl tracking-[0.5em] text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="input-dark text-2xl tracking-[0.5em] text-center font-mono"
             />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && <p className="text-[#ef4444] text-sm">{error}</p>}
             <button
               type="submit" disabled={loading || otp.length < 6}
-              className="w-full bg-gray-900 text-white py-3 rounded-xl font-medium hover:bg-gray-700 transition-colors disabled:opacity-60"
+              className="w-full bg-white text-black py-3 rounded-xl font-bold hover:bg-[#e5e5e5] transition-colors disabled:opacity-40"
+              style={{ fontFamily: "var(--font-syne)" }}
             >
               {loading ? "Verifying..." : "Verify code"}
             </button>
             <div className="text-center">
               {cooldown > 0 ? (
-                <p className="text-sm text-gray-400">Resend in {cooldown}s</p>
+                <p className="text-sm text-[#444]">Resend in {cooldown}s</p>
               ) : (
                 <button
                   type="button"
                   onClick={() => { setStep("email"); setOtp(""); setError(""); }}
-                  className="text-sm text-gray-500 hover:text-gray-800"
+                  className="text-sm text-[#555] hover:text-[#888] transition-colors"
                 >
                   Resend code
                 </button>

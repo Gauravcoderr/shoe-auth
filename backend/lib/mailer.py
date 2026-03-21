@@ -28,8 +28,8 @@ async def send_otp_email(to_email: str, otp: str):
     await aiosmtplib.send(
         msg,
         hostname="smtp.gmail.com",
-        port=587,
-        start_tls=True,
+        port=465,
+        use_tls=True,
         username=settings.GMAIL_USER,
         password=settings.GMAIL_APP_PASSWORD,
     )

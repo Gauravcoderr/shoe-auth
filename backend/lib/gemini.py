@@ -11,7 +11,7 @@ genai.configure(api_key=settings.GEMINI_API_KEY)
 groq_client = AsyncGroq(api_key=settings.GROQ_API_KEY)
 
 GEMINI_MODEL = "gemini-1.5-flash"
-GROQ_MODEL = "llama-3.2-90b-vision-preview"
+GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 
 
 def _parse_json(raw: str) -> dict:

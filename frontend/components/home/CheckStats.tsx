@@ -7,13 +7,13 @@ const STATS = [
 
 export default function CheckStats() {
   return (
-    <section className="bg-gray-900 text-white py-16">
+    <section className="border-t border-b border-[#1a1a1a] py-16">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[#1a1a1a]">
           {STATS.map((s) => (
-            <div key={s.label}>
-              <div className="text-3xl sm:text-4xl font-black text-green-400 mb-2">{s.value}</div>
-              <div className="text-sm text-gray-400">{s.label}</div>
+            <div key={s.label} className="bg-[#0a0a0a] px-8 py-10 text-center">
+              <div className="text-4xl sm:text-5xl font-extrabold text-[#22c55e] mb-2 font-syne">{s.value}</div>
+              <div className="text-xs text-[#555] uppercase tracking-widest">{s.label}</div>
             </div>
           ))}
         </div>

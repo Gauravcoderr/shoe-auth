@@ -17,41 +17,45 @@ const MESSAGES = [
 
 export default function AnalysisLoader() {
   const [msgIdx, setMsgIdx] = useState(0);
-  const [dots, setDots] = useState(".");
 
   useEffect(() => {
     const mt = setInterval(() => setMsgIdx(i => (i + 1) % MESSAGES.length), 2200);
-    const dt = setInterval(() => setDots(d => d.length >= 3 ? "." : d + "."), 500);
-    return () => { clearInterval(mt); clearInterval(dt); };
+    return () => clearInterval(mt);
   }, []);
 
+  const progress = ((msgIdx + 1) / MESSAGES.length) * 100;
+
   return (
-    <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-      <div className="relative w-20 h-20 mx-auto mb-8">
-        <div className="absolute inset-0 border-4 border-gray-100 rounded-full" />
-        <div className="absolute inset-0 border-4 border-t-gray-900 rounded-full animate-spin" />
+    <div className="max-w-lg mx-auto px-4 py-32 text-center">
+      {/* Spinner */}
+      <div className="relative w-20 h-20 mx-auto mb-10">
+        <div className="absolute inset-0 border border-[#1f1f1f] rounded-full" />
+        <div className="absolute inset-0 border-2 border-transparent border-t-[#22c55e] rounded-full animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center text-2xl">👟</div>
       </div>
 
-      <h2 className="text-xl font-bold text-gray-900 mb-3">Analyzing your sneakers</h2>
-      <p className="text-gray-500 text-sm mb-8">
-        Our AI is checking 50+ authentication points. This takes about 20–30 seconds.
+      <h2 className="text-2xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
+        Analyzing your sneakers
+      </h2>
+      <p className="text-[#555] text-sm mb-10">
+        AI is checking 50+ authentication points — about 20–30 seconds.
       </p>
 
-      <div className="bg-gray-50 rounded-2xl px-6 py-4 inline-block min-w-64">
-        <p className="text-sm text-gray-700 font-medium transition-all">
-          {MESSAGES[msgIdx]}{dots}
+      {/* Message */}
+      <div className="bg-[#111] border border-[#1f1f1f] rounded-xl px-6 py-4 mb-8">
+        <p className="text-sm text-[#888] font-medium transition-all">
+          {MESSAGES[msgIdx]}
         </p>
       </div>
 
-      <div className="flex justify-center gap-1.5 mt-8">
-        {MESSAGES.slice(0, 8).map((_, i) => (
-          <div
-            key={i}
-            className={`w-1.5 h-1.5 rounded-full transition-colors ${i === msgIdx % 8 ? "bg-gray-900" : "bg-gray-200"}`}
-          />
-        ))}
+      {/* Progress bar */}
+      <div className="w-full bg-[#1a1a1a] rounded-full h-0.5">
+        <div
+          className="bg-[#22c55e] h-0.5 rounded-full transition-all duration-700"
+          style={{ width: `${progress}%` }}
+        />
       </div>
+      <p className="text-[10px] text-[#333] mt-2 uppercase tracking-widest">{Math.round(progress)}% complete</p>
     </div>
   );
 }

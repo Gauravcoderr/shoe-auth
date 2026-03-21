@@ -18,16 +18,16 @@ interface Props {
 
 export default function BrandSelector({ selected, onSelect }: Props) {
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-4 gap-2">
       {BRANDS.map((brand) => (
         <button
           key={brand.slug}
           onClick={() => onSelect(brand.slug)}
           className={cn(
-            "border rounded-xl py-3 px-2 text-xs font-semibold transition-all text-center",
+            "rounded-xl py-3 px-2 text-xs font-bold transition-all text-center border",
             selected === brand.slug
-              ? "border-gray-900 bg-gray-900 text-white shadow-sm"
-              : "border-gray-200 text-gray-600 hover:border-gray-400"
+              ? "border-white bg-white text-black"
+              : "border-[#222] bg-[#111] text-[#888] hover:border-[#333] hover:text-white"
           )}
         >
           <div className="text-lg mb-1">👟</div>

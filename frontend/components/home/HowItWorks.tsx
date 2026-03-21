@@ -21,17 +21,23 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-16">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-12">
-        How it works
-      </h2>
-      <div className="grid sm:grid-cols-3 gap-8">
-        {STEPS.map((step) => (
-          <div key={step.num} className="relative">
-            <div className="text-4xl mb-4">{step.icon}</div>
-            <div className="text-xs font-bold text-gray-300 mb-2 tracking-widest">STEP {step.num}</div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
-            <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
+    <section className="max-w-6xl mx-auto px-4 py-20">
+      <div className="text-center mb-14">
+        <p className="text-xs text-[#555] uppercase tracking-widest mb-3">Process</p>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-white" style={{ fontFamily: "var(--font-syne)" }}>
+          How it works
+        </h2>
+      </div>
+      <div className="grid sm:grid-cols-3 gap-px bg-[#1a1a1a] rounded-2xl overflow-hidden">
+        {STEPS.map((step, i) => (
+          <div key={step.num} className="bg-[#0a0a0a] p-8 relative">
+            <div className="text-3xl mb-5">{step.icon}</div>
+            <div className="text-xs font-bold text-[#333] mb-3 tracking-widest uppercase">Step {step.num}</div>
+            <h3 className="text-lg font-bold text-white mb-3" style={{ fontFamily: "var(--font-syne)" }}>{step.title}</h3>
+            <p className="text-sm text-[#666] leading-relaxed">{step.desc}</p>
+            {i < STEPS.length - 1 && (
+              <div className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-16 bg-[#1a1a1a]" />
+            )}
           </div>
         ))}
       </div>

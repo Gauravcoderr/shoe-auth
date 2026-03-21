@@ -20,14 +20,10 @@ function CheckPage() {
   const [models, setModels] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Check free limit for anonymous users
   useEffect(() => {
-    if (!user && !hasFreesRemaining()) {
-      setShowGate(true);
-    }
+    if (!user && !hasFreesRemaining()) setShowGate(true);
   }, [user]);
 
-  // Load models for selected brand
   useEffect(() => {
     if (!brand) return;
     api.getBrands().then(({ brands }) => {
@@ -38,18 +34,9 @@ function CheckPage() {
 
   const handleContinue = async () => {
     if (!brand || !model) return;
-
-    // If anonymous and no frees left, show gate
-    if (!user && !hasFreesRemaining()) {
-      setShowGate(true);
-      return;
-    }
-
+    if (!user && !hasFreesRemaining()) { setShowGate(true); return; }
     setLoading(true);
     try {
-      // Create the check record (photos will be added on upload page)
-      // We pass empty photos here and will redirect to upload page
-      // Store brand/model in sessionStorage for upload page
       sessionStorage.setItem("pending_check", JSON.stringify({ brand, model, colorway }));
       router.push(`/check/start`);
     } finally {
@@ -69,34 +56,38 @@ function CheckPage() {
   return (
     <>
       <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Check your sneakers</h1>
-          <p className="text-gray-500 text-sm">
+        {/* Header */}
+        <div className="mb-10">
+          <p className="text-xs text-[#555] uppercase tracking-widest mb-2">Authentication</p>
+          <h1 className="text-3xl font-extrabold text-white mb-2" style={{ fontFamily: "var(--font-syne)" }}>
+            Check your sneakers
+          </h1>
+          <p className="text-[#666] text-sm">
             Select the brand and model, then upload photos from guided angles.
             {!user && (
-              <span className="text-green-600 font-medium">
+              <span className="text-[#22c55e] font-semibold">
                 {" "}{3 - getFreeCheckCount()} free check{3 - getFreeCheckCount() !== 1 ? "s" : ""} remaining.
               </span>
             )}
           </p>
         </div>
 
-        {/* Step 1: Brand */}
+        {/* Step 1 */}
         <div className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Step 1 — Brand</h2>
+          <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">Step 01 — Brand</p>
           <BrandSelector selected={brand} onSelect={setBrand} />
         </div>
 
-        {/* Step 2: Model */}
+        {/* Step 2 */}
         {brand && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Step 2 — Model</h2>
+            <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">Step 02 — Model</p>
             <input
               list="models-list"
               value={model}
               onChange={e => setModel(e.target.value)}
               placeholder="e.g. Air Jordan 1 Retro High OG"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="input-dark"
             />
             <datalist id="models-list">
               {models.map(m => <option key={m} value={m} />)}
@@ -104,25 +95,26 @@ function CheckPage() {
           </div>
         )}
 
-        {/* Step 3: Colorway (optional) */}
+        {/* Step 3 */}
         {model && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
-              Step 3 — Colorway <span className="text-gray-400 normal-case font-normal">(optional but helps accuracy)</span>
-            </h2>
+            <p className="text-xs font-bold text-[#444] mb-3 uppercase tracking-widest">
+              Step 03 — Colorway <span className="text-[#333] normal-case font-normal">(optional)</span>
+            </p>
             <input
               value={colorway}
               onChange={e => setColorway(e.target.value)}
               placeholder="e.g. Chicago, University Blue, Bred..."
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className="input-dark"
             />
           </div>
         )}
 
         <button
+          type="button"
           onClick={handleContinue}
           disabled={!brand || !model || loading}
-          className="w-full bg-gray-900 text-white py-4 rounded-2xl font-semibold hover:bg-gray-700 transition-colors disabled:opacity-40"
+          className="w-full bg-white text-black py-4 rounded-xl font-extrabold hover:bg-[#e5e5e5] transition-colors disabled:opacity-30 text-sm font-syne"
         >
           {loading ? "Starting..." : "Upload photos →"}
         </button>
@@ -131,7 +123,7 @@ function CheckPage() {
       {showAuth && (
         <AuthModal
           onClose={() => setShowAuth(false)}
-          onSuccess={() => { setShowGate(false); }}
+          onSuccess={() => setShowGate(false)}
         />
       )}
     </>
