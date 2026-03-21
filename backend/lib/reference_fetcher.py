@@ -1,7 +1,7 @@
 """
 Reference image fetcher for sneaker authentication.
 Tries multiple free sources with fallbacks. Caches results in MongoDB (30-day TTL).
-All API keys are optional — system works without any of them.
+Empty results are NOT cached so failed lookups retry on next request.
 """
 import re
 import httpx
@@ -21,26 +21,33 @@ def _make_cache_key(brand: str, model: str, colorway: str) -> str:
 
 
 # ─────────────────────────────────────────────
-# Source 1: SneakersAPI.dev
+# Source 1: KicksDB (kicks.dev) — KICKS- prefix key
 # ─────────────────────────────────────────────
-async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]:
+async def _fetch_kicksdb(brand: str, model: str, colorway: str) -> list[str]:
     key = getattr(settings, "SNEAKERS_API_KEY", "")
     query = f"{brand} {model} {colorway}".strip()
-    headers = {"x-api-key": key} if key else {}
     try:
         async with httpx.AsyncClient(timeout=10) as client:
+            # Try v2 endpoint with Bearer auth
             resp = await client.get(
-                "https://api.sneakersapi.dev/api/v3/products",
+                "https://kicks.dev/api/v2/products",
                 params={"q": query, "limit": 5},
-                headers=headers,
+                headers={"Authorization": f"Bearer {key}"} if key else {},
             )
+            if not resp.is_success:
+                # Fallback: v1 with api_key param
+                resp = await client.get(
+                    "https://kicks.dev/api/products",
+                    params={"query": query, "limit": 5, "api_key": key},
+                )
             resp.raise_for_status()
             data = resp.json()
             urls = []
-            for product in data.get("data", []):
-                for field in ("imageUrl", "thumbnail", "image"):
-                    url = product.get("media", {}).get(field) or product.get(field)
-                    if url and url not in urls:
+            items = data if isinstance(data, list) else data.get("products", data.get("data", data.get("results", [])))
+            for product in items:
+                for field in ("imageUrl", "image", "thumbnail", "picture", "img"):
+                    url = product.get(field) or product.get("media", {}).get(field)
+                    if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
             return urls[:4]
     except Exception:
@@ -48,23 +55,23 @@ async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]
 
 
 # ─────────────────────────────────────────────
-# Source 2: KicksDB (kicks.dev)
+# Source 2: SneakersAPI.dev
 # ─────────────────────────────────────────────
-async def _fetch_kicksdb(brand: str, model: str) -> list[str]:
-    query = f"{brand} {model}"
+async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]:
+    query = f"{brand} {model} {colorway}".strip()
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             resp = await client.get(
-                "https://kicks.dev/api/products",
-                params={"query": query, "limit": 5},
+                "https://api.sneakersapi.dev/api/v3/products",
+                params={"q": query, "limit": 5},
             )
             resp.raise_for_status()
             data = resp.json()
             urls = []
-            for product in data.get("products", data if isinstance(data, list) else []):
-                for field in ("imageUrl", "image", "thumbnail", "picture"):
-                    url = product.get(field)
-                    if url and url not in urls:
+            for product in data.get("data", []):
+                for field in ("imageUrl", "thumbnail", "image"):
+                    url = product.get("media", {}).get(field) or product.get(field)
+                    if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
             return urls[:4]
     except Exception:
@@ -74,12 +81,12 @@ async def _fetch_kicksdb(brand: str, model: str) -> list[str]:
 # ─────────────────────────────────────────────
 # Source 3: The Sneaker Database
 # ─────────────────────────────────────────────
-async def _fetch_sneakerdatabase(model: str) -> list[str]:
+async def _fetch_sneakerdatabase(brand: str, model: str) -> list[str]:
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             resp = await client.get(
                 "https://api.thesneakerdatabase.com/v1/sneakers",
-                params={"limit": 5, "name": model},
+                params={"limit": 5, "name": model, "brand": brand},
             )
             resp.raise_for_status()
             data = resp.json()
@@ -88,7 +95,7 @@ async def _fetch_sneakerdatabase(model: str) -> list[str]:
                 media = product.get("media", {})
                 for field in ("imageUrl", "smallImageUrl", "thumbUrl"):
                     url = media.get(field)
-                    if url and url not in urls:
+                    if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
             return urls[:4]
     except Exception:
@@ -103,9 +110,10 @@ async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
     cx = getattr(settings, "GOOGLE_SEARCH_ENGINE_ID", "")
     if not api_key or not cx:
         return []
-    query = f"{brand} {model} {colorway} official authentic site:stockx.com OR site:{brand.lower()}.com".strip()
+    # Simple query without site: restriction — works better with image search
+    query = f"{brand} {model} {colorway} authentic sneaker".strip()
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
+        async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.get(
                 "https://www.googleapis.com/customsearch/v1",
                 params={
@@ -113,14 +121,18 @@ async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
                     "cx": cx,
                     "q": query,
                     "searchType": "image",
-                    "num": 4,
+                    "num": 6,
                     "imgType": "photo",
+                    "imgSize": "medium",
                     "safe": "active",
                 },
             )
             resp.raise_for_status()
             data = resp.json()
-            return [item["link"] for item in data.get("items", []) if item.get("link")][:4]
+            return [
+                item["link"] for item in data.get("items", [])
+                if item.get("link") and item["link"].startswith("http")
+            ][:4]
     except Exception:
         return []
 
@@ -131,13 +143,13 @@ async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
 async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[dict]:
     """
     Returns list of {"url": str, "angle": "reference"} dicts.
-    Tries MongoDB cache → SneakersAPI → KicksDB → SneakerDatabase → Google.
-    Returns [] if nothing found — auth continues gracefully without references.
+    Tries: MongoDB cache → KicksDB → SneakersAPI → SneakerDatabase → Google.
+    Empty results are NOT cached so they retry on next request.
     """
     db = get_db()
     cache_key = _make_cache_key(brand, model, colorway)
 
-    # 1. Check cache
+    # 1. Check cache (only stored when results were found)
     cached = await db.reference_images.find_one({"cache_key": cache_key})
     if cached:
         return cached.get("images", [])
@@ -145,18 +157,21 @@ async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[
     # 2-5. Try each source
     urls: list[str] = []
     for fetcher, args in [
+        (_fetch_kicksdb, (brand, model, colorway)),
         (_fetch_sneakersapi, (brand, model, colorway)),
-        (_fetch_kicksdb, (brand, model)),
-        (_fetch_sneakerdatabase, (model,)),
+        (_fetch_sneakerdatabase, (brand, model)),
         (_fetch_google, (brand, model, colorway)),
     ]:
         urls = await fetcher(*args)
         if urls:
             break
 
+    if not urls:
+        return []  # Don't cache empty — retry next time
+
     images = [{"url": u, "angle": "reference"} for u in urls]
 
-    # Save to cache even if empty (avoids hammering APIs on every miss)
+    # Cache only successful results (30-day TTL via MongoDB index)
     try:
         await db.reference_images.update_one(
             {"cache_key": cache_key},
@@ -171,6 +186,6 @@ async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[
             upsert=True,
         )
     except Exception:
-        pass  # Cache write failure is non-fatal
+        pass
 
     return images
