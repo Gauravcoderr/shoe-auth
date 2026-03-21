@@ -9,7 +9,7 @@ from config.database import settings
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
 
-MODEL = "gemini-2.5-flash-preview-03-25"
+MODEL = "gemini-1.5-flash"
 
 
 async def fetch_image_as_base64(url: str) -> tuple[str, str]:
