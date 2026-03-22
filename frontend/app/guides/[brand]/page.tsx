@@ -79,24 +79,24 @@ export default function BrandGuidePage({ params }: Props) {
         <h1 className="text-4xl font-extrabold text-[#111] mb-4 font-syne">
           How to spot fake {guide.name} sneakers
         </h1>
-        <p className="text-[#666] text-sm leading-relaxed">{guide.intro}</p>
+        <p className="text-[#444] text-base leading-relaxed">{guide.intro}</p>
       </div>
 
       <div className="space-y-3">
         {guide.checks.map((check, i) => (
           <div key={i} className="bg-white border border-[#e8e8e3] rounded-xl p-5 hover:shadow-sm transition-shadow">
-            <h2 className="font-extrabold text-[#111] mb-2 font-syne text-sm flex items-center gap-3">
-              <span className="text-xs text-[#ccc] font-mono font-normal">{String(i + 1).padStart(2, "0")}</span>
+            <h2 className="font-bold text-[#111] mb-2 font-syne text-base flex items-center gap-3">
+              <span className="text-xs text-[#999] font-mono font-normal tabular-nums">{String(i + 1).padStart(2, "0")}</span>
               {check.title}
             </h2>
-            <p className="text-sm text-[#666] leading-relaxed">{check.detail}</p>
+            <p className="text-sm text-[#444] leading-relaxed">{check.detail}</p>
           </div>
         ))}
       </div>
 
       <div className="mt-12 p-8 bg-[#111] rounded-2xl text-center">
         <h3 className="font-extrabold text-white mb-2 font-syne">Want AI to check these for you?</h3>
-        <p className="text-[#666] text-sm mb-6">Upload your shoe photos and our AI checks all these points automatically.</p>
+        <p className="text-[#999] text-sm mb-6">Upload your shoe photos and our AI checks all these points automatically.</p>
         <Link
           href={`/check?brand=${params.brand === "new-balance" ? "new_balance" : params.brand}`}
           className="inline-block bg-white text-black px-8 py-3 rounded-xl text-sm font-bold hover:bg-[#e5e5e5] transition-colors font-syne"
