@@ -17,7 +17,7 @@ export default function WhatSetsUsApart() {
         <div className="sm:row-span-2 bg-[#f0f0ec] border border-[#e8e8e3] rounded-2xl overflow-hidden relative flex flex-col justify-between min-h-[340px]">
           <div className="relative flex-1 w-full">
             <Image
-              src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=85"
+              src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b0f3cc8-dc25-4e65-8f3d-c8ba1f15b2ba/dunk-low-retro-shoes-GGmM6z.png"
               alt="Sneaker authentication"
               fill
               className="object-cover object-center"
@@ -81,7 +81,7 @@ export default function WhatSetsUsApart() {
         {/* Card 5 — Product image */}
         <div className="relative bg-[#f7f7f4] border border-[#e8e8e3] rounded-2xl overflow-hidden min-h-[200px]">
           <Image
-            src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=85"
+            src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/c5adc7bc-8bd9-4cf2-accc-81d63b0d73ea/dunk-low-retro-shoes-GGmM6z.png"
             alt="Sneakers on display"
             fill
             className="object-cover object-center"

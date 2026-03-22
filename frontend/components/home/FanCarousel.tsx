@@ -4,43 +4,43 @@ import Image from "next/image";
 
 const CARDS = [
   {
-    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=90",
+    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e7e9d5e7-6edd-48cb-92cd-dd5e9c774f00/air-jordan-1-retro-high-og-shoes-2zMDWz.png",
     brand: "Air Jordan 1",
     colorway: "Chicago",
     verdict: "pass" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&q=90",
+    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/2a9d8d90-dc37-4b2b-a67c-63b5ba8f7568/dunk-high-retro-shoes-QJRbfl.png",
     brand: "Nike Dunk High",
     colorway: "Syracuse",
     verdict: "fail" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500&q=90",
+    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b0f3cc8-dc25-4e65-8f3d-c8ba1f15b2ba/dunk-low-retro-shoes-GGmM6z.png",
     brand: "Nike Dunk Low",
     colorway: "Panda",
     verdict: "pass" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1607522370275-f6fd0dd05e8b?w=500&q=90",
+    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/iupkuknl5qcx9lrzuxhz/air-jordan-1-retro-high-og-shoes.png",
     brand: "Jordan 1 High",
     colorway: "Mocha",
     verdict: "fail" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=500&q=90",
+    img: "https://nb.scene7.com/is/image/NB/ML550BE1?$pdpflexf2$&wid=500&hei=500&qlt=80&fmt=webp",
     brand: "New Balance 550",
     colorway: "White/Green",
     verdict: "pass" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=500&q=90",
+    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b7d9211c-26e7-431a-ac24-b0540fb3c00f/air-force-1-07-shoes-WrLlWX.png",
     brand: "Nike AF1",
     colorway: "Triple White",
     verdict: "pass" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=500&q=90",
+    img: "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/2938800fb7264dd99e86adf200d4ccbf_9366/Samba_OG_Shoes_Black_B75807_01_standard.jpg",
     brand: "Adidas Samba",
     colorway: "Black/White",
     verdict: "pass" as const,
