@@ -70,7 +70,7 @@ export default function HeroSection() {
           <span className="w-1 h-1 bg-[#ddd] rounded-full" />
           <span>50+ checkpoints</span>
           <span className="w-1 h-1 bg-[#ddd] rounded-full" />
-          <span>Nike · Jordan · Adidas · Yeezy · New Balance</span>
+          <span>Nike · Jordan · Adidas · New Balance</span>
           <span className="w-1 h-1 bg-[#ddd] rounded-full" />
           <span>Results in ~30s</span>
         </div>

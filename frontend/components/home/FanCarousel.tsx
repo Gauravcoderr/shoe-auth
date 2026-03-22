@@ -10,9 +10,9 @@ const CARDS = [
     verdict: "pass" as const,
   },
   {
-    img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=90",
-    brand: "Yeezy 350 V2",
-    colorway: "Zebra",
+    img: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&q=90",
+    brand: "Nike Dunk High",
+    colorway: "Syracuse",
     verdict: "fail" as const,
   },
   {

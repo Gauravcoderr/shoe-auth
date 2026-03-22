@@ -1,5 +1,5 @@
 const STEPS = [
-  { num: "01", title: "Pick your brand & model", desc: "Select from Nike, Jordan, Adidas, Yeezy, New Balance, Puma, Reebok and Asics. We support model-level authentication.", icon: "↗" },
+  { num: "01", title: "Pick your brand & model", desc: "Select from Nike, Jordan, Adidas, or New Balance. We support model-level authentication with brand-specific fake indicators.", icon: "↗" },
   { num: "02", title: "Upload 5–8 photos", desc: "Follow guided angle templates — side, sole, tongue, heel, toe. We show you exactly where to point your camera.", icon: "⤴" },
   { num: "03", title: "Get your verdict", desc: "AI checks 50+ points — stitching, color accuracy, logo placement, sole pattern — and returns a detailed pass/fail breakdown.", icon: "✓" },
 ];

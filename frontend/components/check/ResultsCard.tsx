@@ -10,8 +10,7 @@ interface Props {
 }
 
 const BRAND_GUIDE_SLUGS: Record<string, string> = {
-  nike: "nike", jordan: "jordan", adidas: "adidas", yeezy: "yeezy",
-  new_balance: "new-balance", puma: "puma", reebok: "reebok", asics: "asics",
+  nike: "nike", jordan: "jordan", adidas: "adidas", new_balance: "new-balance",
 };
 
 function groupByCategory(results: AuthCheck["results"]) {

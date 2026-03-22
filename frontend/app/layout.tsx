@@ -11,7 +11,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
   title: "SneakerAuth — AI Shoe Authentication",
-  description: "Upload photos of your sneakers. Our AI checks 50+ points in seconds and tells you if they're real or fake. Supports Nike, Jordan, Adidas, Yeezy, New Balance and more.",
+  description: "Upload photos of your sneakers. Our AI checks 50+ points in seconds and tells you if they're real or fake. Supports Nike, Jordan, Adidas, and New Balance.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

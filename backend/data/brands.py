@@ -86,33 +86,6 @@ BRANDS: Dict[str, dict] = {
             "Adidas 3-stripe logo on box end should match the stripe thickness of the stripes on the shoe itself — fakes rescale the box logo independently",
         ],
     },
-    "yeezy": {
-        "name": "Yeezy",
-        "slug": "yeezy",
-        "models": [
-            "Yeezy Boost 350 V2", "Yeezy Boost 700", "Yeezy Boost 700 V2",
-            "Yeezy Boost 380", "Yeezy Foam Runner", "Yeezy Slide",
-            "Yeezy 500", "Yeezy 450", "Yeezy NSLTD BT",
-        ],
-        "serial_format": "Style code format: XXXXXX. Example: FW5317. On box and inner tag.",
-        "fake_indicators": [
-            "Yeezy 350 V2 Primeknit diagonal lines must align perfectly — even 1mm misalignment is visible and indicates a fake",
-            "BOOST midsole pellets on fakes look less 'bumpy' — individual oval pellets should be distinctly visible with regular texture",
-            "Yeezy inner label stitching: authentic uses tight lockstitch, fakes use chain stitch that unravels when pulled",
-            "Yeezy 350 V2 heel tab must sit completely flush against the heel — protruding tab = fake",
-            "Monofilament layer (translucent horizontal stripe on 350 V2) must be perfectly straight with no wavering",
-            "ADIDAS YEEZY text on insole must be embossed (raised/recessed into material) — printed-on flat text = fake",
-            # Lace indicators
-            "Yeezy 350 V2 laces are a flat woven cotton-polyester blend in off-white/cream tone — bright white or smooth silky laces = fake or replacement",
-            "Yeezy aglets are a distinctive elongated oval plastic mold in cream/off-white — silver metal crimps on Yeezy 350 are incorrect",
-            "Yeezy 700 laces are multi-color with specific color-blocked segment pattern — fakes usually get the color segment lengths wrong",
-            # Box indicators
-            "Yeezy box is matte black with 'ADIDAS YEEZY' in white text using Adidas's own typeface — fakes use Helvetica or Arial which looks slightly different",
-            "Yeezy box label style code is 6 characters followed by size — separator must be correct format; fakes often use underscore vs space incorrectly",
-            "Authentic Yeezy box has thin white tissue paper pressed flat against shoe — fakes omit tissue or use thicker paper",
-            "Yeezy box interior: 'BOOST' technology tag should be a separate sewn-in tag, not printed directly on the inner lining",
-        ],
-    },
     "new_balance": {
         "name": "New Balance",
         "slug": "new-balance",
@@ -135,51 +108,6 @@ BRANDS: Dict[str, dict] = {
             "New Balance box is plain brown kraft cardboard with no color printing on exterior except the label — any colored or branded exterior box = suspicious",
             "NB box label style code includes both letters and numbers in model-specific order (e.g. BB550WT1) — transposed letters or wrong character count = fake",
             "NB box label includes a size conversion chart — if any size conversion is mathematically incorrect, the label is fake",
-        ],
-    },
-    "puma": {
-        "name": "Puma",
-        "slug": "puma",
-        "models": [
-            "Suede Classic", "RS-X", "Clyde", "Rider FV", "Basket Classic",
-            "Future Rider", "Mayze", "Cali", "Alteration Kurve",
-        ],
-        "serial_format": "6-digit article number. Example: 374915-01. On box and inner label.",
-        "fake_indicators": [
-            "Puma formstrip (side stripe) on fakes is often too wide or wrong angle",
-            "The Puma cat logo proportions are frequently wrong on fakes",
-            "Suede texture on Suede Classic should be fine-grain — fakes use coarser suede",
-            "Authentic Puma Suede soles are slightly flexible rubber — fakes use harder plastic-like sole",
-        ],
-    },
-    "reebok": {
-        "name": "Reebok",
-        "slug": "reebok",
-        "models": [
-            "Classic Leather", "Club C 85", "Freestyle Hi", "Question Mid",
-            "Answer IV", "Instapump Fury", "Nano X3", "BB4500",
-        ],
-        "serial_format": "Style code varies. Example: DV3811. On box and tongue label.",
-        "fake_indicators": [
-            "Reebok vector logo (the double union jack) is a common fake tell — lines should be perfectly parallel",
-            "Classic Leather tongue label font should be clean and consistent",
-            "The hexalite cushioning on fakes looks different in shape and distribution",
-            "DMX foam on fakes doesn't have the same visible air channel pattern",
-        ],
-    },
-    "asics": {
-        "name": "Asics",
-        "slug": "asics",
-        "models": [
-            "Gel-Kayano 14", "Gel-Nimbus 9", "Gel-Lyte III", "Gel-1090",
-            "Gel-NYC", "GT-2160", "Gel-Cumulus", "Novablast 3",
-        ],
-        "serial_format": "Style code: 4 letters + 4 digits. Example: 1201A019. On box and inner label.",
-        "fake_indicators": [
-            "ASICS stripes (onitsuka tiger stripes) on fakes are often wrong width or angle",
-            "GEL cushioning unit on fakes is usually a solid rubber blob, not the actual silicone gel",
-            "The reflective panels on Gel-Lyte fakes lack the fine honeycomb texture of authentics",
-            "Tongue gusset (the fabric connecting tongue to upper) on fakes is often missing or poorly attached",
         ],
     },
 }
