@@ -23,6 +23,20 @@ export const metadata: Metadata = {
     title: "SneakerAuth",
   },
   formatDetection: { telephone: false },
+  openGraph: {
+    title: "SneakerAuth — AI Shoe Authentication",
+    description: "Is your sneaker real or fake? Upload photos and get an AI verdict in 30 seconds.",
+    url: "https://sneakerauth.vercel.app",
+    siteName: "SneakerAuth",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "SneakerAuth" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SneakerAuth — AI Shoe Authentication",
+    description: "Is your sneaker real or fake? AI verdict in 30 seconds.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
