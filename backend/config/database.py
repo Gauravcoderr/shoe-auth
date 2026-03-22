@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SNEAKERS_API_KEY: str = ""
     GOOGLE_API_KEY: str = ""
     GOOGLE_SEARCH_ENGINE_ID: str = ""
+    SERPER_API_KEY: str = ""
 
     class Config:
         env_file = ".env"
