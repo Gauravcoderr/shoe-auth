@@ -26,7 +26,7 @@ export default function WhatSetsUsApart() {
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#16a34a] rounded-br" />
             </div>
             <div className="bg-[#16a34a]/10 border border-[#16a34a]/30 rounded-full px-4 py-1.5">
-              <span className="text-[#16a34a] text-xs font-bold font-syne">AI Scanning · 74 checkpoints</span>
+              <span className="text-[#16a34a] text-xs font-bold font-syne">AI Scanning · 74 Checkpoints</span>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-full px-4 py-1.5">
               <span className="text-white/60 text-xs font-syne">Result in &lt; 30 seconds</span>
@@ -73,7 +73,7 @@ export default function WhatSetsUsApart() {
           <div className="text-5xl font-extrabold text-[#111] font-syne mb-2">74</div>
           <p className="text-base font-extrabold text-[#111] font-syne mb-2">Checkpoints per shoe</p>
           <p className="text-sm text-[#888] leading-relaxed">
-            Shape, stitching, logos, sole tread, tongue labels, heel tabs, serial numbers — checked automatically.
+            Shape, stitching, logos, sole tread, tongue labels, heel tabs, serial numbers — all checked automatically.
           </p>
         </div>
 

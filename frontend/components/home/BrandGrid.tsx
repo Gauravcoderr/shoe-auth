@@ -29,7 +29,7 @@ const BRANDS = [
     name: "New Balance",
     slug: "new_balance",
     // Official New Balance logo — Wikimedia Commons
-    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ea/New_Balance_logo.svg",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/300px-New_Balance_logo.svg.png",
     bg: "bg-white",
     models: "550 · 990 · 574 · 9060",
   },

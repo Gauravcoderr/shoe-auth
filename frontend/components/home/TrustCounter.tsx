@@ -1,7 +1,7 @@
 const COUNTERS = [
-  { value: "10,000+", label: "Checks completed" },
+  { value: "100+", label: "Checks completed" },
   { value: "98%", label: "Accuracy rate" },
-  { value: "50+", label: "Checkpoints per shoe" },
+  { value: "74", label: "Checkpoints per shoe" },
   { value: "<30s", label: "Results time" },
 ];
 
