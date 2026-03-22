@@ -64,15 +64,66 @@ SHOE BEING ANALYZED
 - Colorway: {colorway or "Unknown"}
 
 {reference_section}====================================
-STAGE 1 — INPUT VALIDATION
+STAGE 1 — INPUT VALIDATION (MANDATORY — DO THIS BEFORE ANY OTHER STAGE)
 ====================================
-Before any authentication work:
-- Confirm each user photo shows a sneaker
-- If a photo is clearly NOT a shoe (random object, food, person, unrelated item) → mark ALL
-  checks that depend on that photo as FAIL with note "Wrong image provided — not a shoe"
-- If a photo is the wrong angle for what is needed → mark dependent checks as FAIL
-- If a photo is too blurry/dark to see detail → mark dependent checks as SKIPPED
-- Map each check to the correct photo angle
+For EVERY user photo, perform these three steps in order. Do NOT skip this stage.
+
+STEP A — CONFIRM CORRECT SUBJECT:
+- If the angle slot is NOT "box-label": the image MUST show a sneaker/shoe as the main subject.
+  If it shows anything else (a cardboard box, a label sticker, a person, food, a blank surface,
+  a random object) → mark ALL checks that depend on this photo as FAIL with note:
+  "Wrong image — expected a shoe photo, got something else"
+- If the angle slot IS "box-label": the image MUST show a shoe box or its printed label (cardboard
+  exterior with size/barcode/style code), NOT a bare shoe. If a bare shoe is uploaded in this slot
+  → FAIL all box-label checks with note: "Wrong image — expected shoe box/label, got a shoe photo"
+
+STEP B — CONFIRM THE CORRECT ANGLE. Each angle has a strict visual definition. Verify the actual
+image content matches — do NOT trust only the label metadata:
+
+  "side-lateral"  → Must show the OUTER side of the shoe. The lateral ankle, outer quarter panel,
+                    and outer outsole edge must be the dominant visible face of the shoe. The
+                    arch/inner side must NOT be facing the camera. If the inner/arch side is what's
+                    shown → FAIL all side-lateral checks with note: "Wrong angle — medial (inner)
+                    side shown, lateral (outer) side required"
+
+  "side-medial"   → Must show the INNER/ARCH side of the shoe. The arch, medial ankle, and inner
+                    quarter panel must be the dominant visible face. If the outer side is facing the
+                    camera instead → FAIL all side-medial checks with note: "Wrong angle — lateral
+                    (outer) side shown, medial (inner/arch) side required"
+
+  "top-down"      → Camera must be directly ABOVE the shoe pointing straight down. Laces and tongue
+                    must be clearly visible from overhead. If the photo is taken from the side, heel,
+                    or any non-overhead angle → FAIL all top-down checks with note: "Wrong angle —
+                    top-down (overhead) view required"
+
+  "heel"          → Must show the BACK of the shoe head-on. The heel tab, heel counter, and rear
+                    of the midsole/outsole must be centered in frame. If a side, top, or any
+                    non-rear view is shown → FAIL all heel checks with note: "Wrong angle — direct
+                    rear/heel view required"
+
+  "sole"          → Must show the BOTTOM rubber outsole/tread of the shoe with the camera pointing
+                    straight down at it. If the photo shows the top, side, or any non-bottom view
+                    → FAIL all sole checks with note: "Wrong angle — sole (bottom) view required"
+
+  "tongue"        → Must show a CLOSE-UP of the tongue label with text that is fully legible. If
+                    the tongue is not the main subject or the label text cannot be read → SKIPPED
+                    with note: "Tongue label not visible or illegible"
+
+  "toe-front"     → Must show the FRONT of the toe box in a straight-on frontal view. If a side
+                    or top view is shown instead → FAIL all toe-front checks with note: "Wrong
+                    angle — straight front/toe-box view required"
+
+  "box-label"     → Must show the shoe BOX LABEL (printed adhesive label or cardboard box exterior
+                    with size, barcode, style code text). If a bare shoe is shown instead → FAIL
+                    all box-label checks with note: "Wrong image — shoe box/label required, not
+                    a bare shoe"
+
+STEP C — CONFIRM USABLE QUALITY:
+- If a photo is too blurry, dark, or overexposed to make out the required details → SKIPPED for
+  all dependent checks with note: "Photo too blurry/dark to evaluate"
+
+Only after a photo passes Steps A, B, and C should you run authentication checks that depend on it.
+Map each check to its required photo angle before evaluating.
 
 ====================================
 STAGE 2 — REFERENCE MATCHING
