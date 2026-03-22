@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function WhatSetsUsApart() {
@@ -8,33 +7,34 @@ export default function WhatSetsUsApart() {
         <p className="text-xs text-[#bbb] uppercase tracking-widest font-syne">What sets us apart</p>
       </div>
 
-      {/* Bento grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 auto-rows-auto">
 
-        {/* Row 1 */}
-
-        {/* Card 1 — Large shoe card with AI badge */}
-        <div className="sm:row-span-2 bg-[#f0f0ec] border border-[#e8e8e3] rounded-2xl overflow-hidden relative flex flex-col justify-between min-h-[340px]">
-          <div className="relative flex-1 w-full">
-            <Image
-              src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b0f3cc8-dc25-4e65-8f3d-c8ba1f15b2ba/dunk-low-retro-shoes-GGmM6z.png"
-              alt="Sneaker authentication"
-              fill
-              unoptimized
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 100vw, 33vw"
-            />
-            {/* Floating AI checker badges */}
-            <div className="absolute top-6 left-5 bg-white/90 backdrop-blur-sm text-[#111] text-xs font-bold px-3 py-1.5 rounded-full shadow-sm font-syne border border-[#e8e8e3]">
-              AI Checker ✓
+        {/* Card 1 — AI authentication visual */}
+        <div className="sm:row-span-2 bg-[#111] border border-[#222] rounded-2xl overflow-hidden relative flex flex-col justify-between min-h-[340px]">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 gap-4">
+            {/* Animated scan lines */}
+            <div className="relative w-28 h-28">
+              <div className="absolute inset-0 rounded-2xl border-2 border-[#16a34a]/40" />
+              <div className="absolute inset-2 rounded-xl border border-[#16a34a]/20" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-5xl">👟</span>
+              </div>
+              {/* Corner marks */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#16a34a] rounded-tl" />
+              <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#16a34a] rounded-tr" />
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#16a34a] rounded-bl" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#16a34a] rounded-br" />
             </div>
-            <div className="absolute bottom-16 right-5 bg-white/90 backdrop-blur-sm text-[#111] text-xs font-bold px-3 py-1.5 rounded-full shadow-sm font-syne border border-[#e8e8e3]">
-              AI Checker ✓
+            <div className="bg-[#16a34a]/10 border border-[#16a34a]/30 rounded-full px-4 py-1.5">
+              <span className="text-[#16a34a] text-xs font-bold font-syne">AI Scanning · 74 checkpoints</span>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-full px-4 py-1.5">
+              <span className="text-white/60 text-xs font-syne">Result in &lt; 30 seconds</span>
             </div>
           </div>
-          <div className="p-5 bg-white/80 backdrop-blur-sm">
-            <h3 className="text-lg font-extrabold text-[#111] font-syne mb-1">AI-powered authentication</h3>
-            <p className="text-sm text-[#888]">50+ checkpoints analyzed per shoe in under 30 seconds.</p>
+          <div className="p-5 border-t border-white/10">
+            <h3 className="text-lg font-extrabold text-white font-syne mb-1">AI-powered authentication</h3>
+            <p className="text-sm text-[#555]">74 checkpoints analyzed per shoe in under 30 seconds.</p>
           </div>
         </div>
 
@@ -50,7 +50,7 @@ export default function WhatSetsUsApart() {
           </div>
         </div>
 
-        {/* Card 3 — Pricing / Free tier */}
+        {/* Card 3 — Pricing */}
         <div className="bg-[#111] border border-[#222] rounded-2xl p-7 flex flex-col justify-between">
           <div>
             <p className="text-xs text-[#555] uppercase tracking-widest font-syne mb-3">Pricing</p>
@@ -67,32 +67,25 @@ export default function WhatSetsUsApart() {
           </div>
         </div>
 
-        {/* Row 2 */}
-
         {/* Card 4 — 50+ checkpoints */}
         <div className="bg-white border border-[#e8e8e3] rounded-2xl p-7">
           <p className="text-xs text-[#bbb] uppercase tracking-widest font-syne mb-4">Coverage</p>
-          <div className="text-5xl font-extrabold text-[#111] font-syne mb-2">50+</div>
+          <div className="text-5xl font-extrabold text-[#111] font-syne mb-2">74</div>
           <p className="text-base font-extrabold text-[#111] font-syne mb-2">Checkpoints per shoe</p>
           <p className="text-sm text-[#888] leading-relaxed">
             Shape, stitching, logos, sole tread, tongue labels, heel tabs, serial numbers — checked automatically.
           </p>
         </div>
 
-        {/* Card 5 — Product image */}
-        <div className="relative bg-[#f7f7f4] border border-[#e8e8e3] rounded-2xl overflow-hidden min-h-[200px]">
-          <Image
-            src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/c5adc7bc-8bd9-4cf2-accc-81d63b0d73ea/dunk-low-retro-shoes-GGmM6z.png"
-            alt="Sneakers on display"
-            fill
-            unoptimized
-            className="object-cover object-center"
-            sizes="(max-width: 640px) 100vw, 33vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-5 left-5 right-5">
-            <p className="text-white font-extrabold text-base font-syne">Certificate of Authentication</p>
-            <p className="text-white/60 text-xs mt-1">Issued for every authentic pair</p>
+        {/* Card 5 — Certificate */}
+        <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-2xl p-7 flex flex-col justify-between min-h-[200px]">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-[#16a34a] rounded-full flex items-center justify-center text-white text-lg font-black">✓</div>
+            <span className="text-xs font-bold text-[#16a34a] uppercase tracking-widest font-syne">Authenticated</span>
+          </div>
+          <div>
+            <p className="text-[#111] font-extrabold text-base font-syne mb-1">Certificate of Authentication</p>
+            <p className="text-[#16a34a]/70 text-xs">Issued for every verified authentic pair</p>
           </div>
         </div>
 

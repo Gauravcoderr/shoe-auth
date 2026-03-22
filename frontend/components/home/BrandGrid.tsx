@@ -1,10 +1,38 @@
 import Link from "next/link";
 
 const BRANDS = [
-  { name: "Nike",        slug: "nike",        bgClass: "bg-white",     logo: "/logos/nike.svg",        logoClass: "w-28 h-10 object-contain" },
-  { name: "Air Jordan",  slug: "jordan",      bgClass: "bg-[#fef2f2]", logo: "/logos/jordan.svg",      logoClass: "w-16 h-20 object-contain" },
-  { name: "Adidas",      slug: "adidas",      bgClass: "bg-white",     logo: "/logos/adidas.svg",      logoClass: "w-24 h-16 object-contain" },
-  { name: "New Balance", slug: "new_balance", bgClass: "bg-[#eff6ff]", logo: "/logos/new-balance.svg", logoClass: "w-32 h-14 object-contain" },
+  {
+    name: "Nike",
+    slug: "nike",
+    // Official Nike Swoosh — Wikimedia Commons
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
+    bg: "bg-white",
+    models: "Air Force 1 · Dunk · Air Max",
+  },
+  {
+    name: "Air Jordan",
+    slug: "jordan",
+    // Official Jumpman logo — Wikimedia
+    logo: "https://upload.wikimedia.org/wikipedia/en/3/37/Jumpman_logo.svg",
+    bg: "bg-[#fef2f2]",
+    models: "Jordan 1 · 3 · 4 · 11",
+  },
+  {
+    name: "Adidas",
+    slug: "adidas",
+    // Official Adidas wordmark — Wikimedia Commons
+    logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
+    bg: "bg-white",
+    models: "Samba · Stan Smith · Ultra Boost",
+  },
+  {
+    name: "New Balance",
+    slug: "new_balance",
+    // Official New Balance logo — Wikimedia Commons
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ea/New_Balance_logo.svg",
+    bg: "bg-white",
+    models: "550 · 990 · 574 · 9060",
+  },
 ];
 
 export default function BrandGrid() {
@@ -22,13 +50,18 @@ export default function BrandGrid() {
             href={`/check?brand=${brand.slug}`}
             className="group bg-white border border-[#e8e8e3] rounded-xl overflow-hidden hover:border-[#111] hover:shadow-sm transition-all"
           >
-            <div className={`w-full h-28 flex items-center justify-center ${brand.bgClass}`}>
+            <div className={`w-full h-28 flex items-center justify-center px-6 ${brand.bg} group-hover:bg-[#f7f7f4] transition-colors`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={brand.logo} alt={brand.name} className={brand.logoClass} />
+              <img
+                src={brand.logo}
+                alt={`${brand.name} logo`}
+                className="max-h-12 max-w-full object-contain"
+              />
             </div>
             <div className="p-4">
               <div className="font-extrabold text-[#111] text-sm font-syne">{brand.name}</div>
-              <div className="text-xs text-[#16a34a] mt-1 font-medium">✓ Supported</div>
+              <div className="text-[10px] text-[#bbb] mt-0.5 truncate">{brand.models}</div>
+              <div className="text-xs text-[#16a34a] mt-1.5 font-medium">✓ Supported</div>
             </div>
           </Link>
         ))}

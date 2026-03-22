@@ -1,33 +1,40 @@
 import Link from "next/link";
-import Image from "next/image";
 
 const GUIDES = [
   {
     slug: "nike",
     name: "Nike",
     desc: "Air Force 1, Dunk, Air Max — swoosh shape, sole color, stitching density",
-    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b0f3cc8-dc25-4e65-8f3d-c8ba1f15b2ba/dunk-low-retro-shoes-GGmM6z.png",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
+    bg: "bg-[#f7f7f4]",
+    accent: "text-[#111]",
     count: 6,
   },
   {
     slug: "jordan",
     name: "Air Jordan",
     desc: "Jordan 1, 4, 11 — toe cap perforations, Jumpman proportions, heel stiffness",
-    img: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e7e9d5e7-6edd-48cb-92cd-dd5e9c774f00/air-jordan-1-retro-high-og-shoes-2zMDWz.png",
+    logo: "https://upload.wikimedia.org/wikipedia/en/3/37/Jumpman_logo.svg",
+    bg: "bg-[#fef2f2]",
+    accent: "text-[#cc0000]",
     count: 6,
   },
   {
     slug: "adidas",
     name: "Adidas",
     desc: "Samba, Stan Smith, Ultra Boost — 3-stripe spacing, BOOST foam, Primeknit weave",
-    img: "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/68ae7ea7849b43eca70aac1e00f5146d_9366/Stan_Smith_Shoes_White_FX5502_01_standard.jpg",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
+    bg: "bg-[#f7f7f4]",
+    accent: "text-[#111]",
     count: 6,
   },
   {
     slug: "new-balance",
     name: "New Balance",
     desc: "550, 990 series — 'N' logo weight, ENCAP midsole ring, suede quality",
-    img: "https://nb.scene7.com/is/image/NB/ML550BE1?$pdpflexf2$&wid=500&hei=500&qlt=80&fmt=webp",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ea/New_Balance_logo.svg",
+    bg: "bg-[#eff6ff]",
+    accent: "text-[#1d4ed8]",
     count: 5,
   },
 ];
@@ -50,20 +57,17 @@ export default function GuidesPage() {
             href={`/guides/${g.slug}`}
             className="group bg-white border border-[#e8e8e3] rounded-2xl overflow-hidden hover:border-[#111] hover:shadow-md transition-all"
           >
-            <div className="relative w-full h-44 bg-[#f7f7f4] overflow-hidden">
-              <Image
-                src={g.img}
+            <div className={`w-full h-44 ${g.bg} flex flex-col items-center justify-center gap-3 relative overflow-hidden`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={g.logo}
                 alt={g.name}
-                fill
-                unoptimized
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 640px) 100vw, 50vw"
+                className="h-16 w-16 object-contain"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <span className="absolute bottom-3 left-4 text-white text-xs font-bold font-syne uppercase tracking-widest">
+              <span className={`text-xs font-black uppercase tracking-widest font-syne ${g.accent}`}>
                 {g.name}
               </span>
-              <span className="absolute bottom-3 right-4 text-white/70 text-[10px] font-syne">
+              <span className="absolute bottom-3 right-4 text-[10px] text-[#bbb] font-syne">
                 {g.count} checkpoints
               </span>
             </div>
