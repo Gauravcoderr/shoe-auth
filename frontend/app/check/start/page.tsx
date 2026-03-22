@@ -25,6 +25,7 @@ export default function UploadPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [referenceImages, setReferenceImages] = useState<string[]>([]);
+  const [failedRefs, setFailedRefs] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const data = sessionStorage.getItem("pending_check");
@@ -98,20 +99,23 @@ export default function UploadPage() {
       </div>
 
       {/* Reference Images Panel */}
-      {referenceImages.length > 0 && (
+      {referenceImages.length > 0 && referenceImages.length > failedRefs.size && (
         <div className="bg-white border border-[#e8e8e3] rounded-xl p-4 mb-6">
           <p className="text-[10px] text-[#aaa] uppercase tracking-widest font-syne mb-3">
             ✓ Authentic Reference · Compare your photos against these
           </p>
           <div className="flex gap-2 overflow-x-auto pb-1">
             {referenceImages.map((url, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={i}
-                src={url}
-                alt={`Authentic reference ${i + 1}`}
-                className="h-28 w-28 object-cover rounded-lg flex-shrink-0 border border-[#e8e8e3]"
-              />
+              failedRefs.has(i) ? null : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={i}
+                  src={url}
+                  alt={`Authentic reference ${i + 1}`}
+                  className="h-28 w-28 object-cover rounded-lg flex-shrink-0 border border-[#e8e8e3]"
+                  onError={() => setFailedRefs(prev => new Set(prev).add(i))}
+                />
+              )
             ))}
           </div>
           <p className="text-[9px] text-[#ccc] mt-2">

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { AuthCheck } from "@/types";
 import VerdictBadge from "./VerdictBadge";
 import CheckItemRow from "./CheckItemRow";
@@ -27,6 +28,23 @@ export default function ResultsCard({ check }: Props) {
   const failCount = check.results.filter(r => r.result === "fail").length;
   const passCount = check.results.filter(r => r.result === "pass").length;
   const warnCount = check.results.filter(r => r.result === "warning").length;
+
+  // Categories with failures default open, others default closed
+  const [openCategories, setOpenCategories] = useState<Set<string>>(() => {
+    const open = new Set<string>();
+    for (const [cat, results] of Object.entries(groupByCategory(check.results))) {
+      if (results.some(r => r.result === "fail" || r.result === "warning")) open.add(cat);
+    }
+    return open;
+  });
+
+  const toggleCategory = (cat: string) => {
+    setOpenCategories(prev => {
+      const next = new Set(prev);
+      next.has(cat) ? next.delete(cat) : next.add(cat);
+      return next;
+    });
+  };
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-14">
@@ -98,22 +116,47 @@ export default function ResultsCard({ check }: Props) {
       )}
 
       {/* Results by category */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         {Object.entries(groups).map(([category, results]) => {
           const catFails = results.filter(r => r.result === "fail").length;
+          const catWarns = results.filter(r => r.result === "warning").length;
+          const catPass = results.filter(r => r.result === "pass").length;
+          const isOpen = openCategories.has(category);
           return (
             <div key={category} className="bg-white border border-[#e8e8e3] rounded-xl overflow-hidden shadow-sm">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0ec]">
-                <h3 className="font-bold text-sm text-[#111] font-syne">{category}</h3>
-                {catFails > 0 && (
-                  <span className="text-[10px] font-bold text-[#dc2626] bg-[#fef2f2] border border-[#fecaca] px-2 py-0.5 rounded-full uppercase tracking-wide font-syne">
-                    {catFails} issue{catFails > 1 ? "s" : ""}
-                  </span>
-                )}
-              </div>
-              <div className="px-4">
-                {results.map(r => <CheckItemRow key={r.check_id} result={r} />)}
-              </div>
+              <button
+                type="button"
+                onClick={() => toggleCategory(category)}
+                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[#fafaf9] transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs transition-transform ${isOpen ? "rotate-90" : ""}`}>▶</span>
+                  <h3 className="font-bold text-sm text-[#111] font-syne">{category}</h3>
+                  <span className="text-[10px] text-[#bbb]">({results.length})</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {catFails > 0 && (
+                    <span className="text-[10px] font-bold text-[#dc2626] bg-[#fef2f2] border border-[#fecaca] px-2 py-0.5 rounded-full uppercase tracking-wide font-syne">
+                      {catFails} fail{catFails > 1 ? "s" : ""}
+                    </span>
+                  )}
+                  {catWarns > 0 && (
+                    <span className="text-[10px] font-bold text-[#d97706] bg-[#fffbeb] border border-[#fde68a] px-2 py-0.5 rounded-full uppercase tracking-wide font-syne">
+                      {catWarns} warn
+                    </span>
+                  )}
+                  {catFails === 0 && catWarns === 0 && (
+                    <span className="text-[10px] font-bold text-[#16a34a] bg-[#f0fdf4] border border-[#bbf7d0] px-2 py-0.5 rounded-full uppercase tracking-wide font-syne">
+                      {catPass} ✓
+                    </span>
+                  )}
+                </div>
+              </button>
+              {isOpen && (
+                <div className="px-4 border-t border-[#f0f0ec]">
+                  {results.map(r => <CheckItemRow key={r.check_id} result={r} />)}
+                </div>
+              )}
             </div>
           );
         })}

@@ -37,25 +37,25 @@ STATIC_REFS: dict[str, list[str]] = {
     "nike_air-max-97": [
         "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqgec3mwpzubzbxm/air-max-97-shoes-P2VmXZ.png",
     ],
-    # Jordan
+    # Jordan — using Nike CDN (same CDN as Jordan Brand)
     "jordan_air-jordan-1-retro-high-og": [
-        "https://images.unsplash.com/photo-1607522370275-f6fd0dd05e8b?w=600&q=90",
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/e7e9d5e7-6edd-48cb-92cd-dd5e9c774f00/air-jordan-1-retro-high-og-shoes-2zMDWz.png",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/iupkuknl5qcx9lrzuxhz/air-jordan-1-retro-high-og-shoes.png",
     ],
     "jordan_air-jordan-1-low": [
-        "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/00375837-849f-4f17-b7f8-62b72dfde4e2/air-jordan-1-low-shoes.png",
     ],
     "jordan_air-jordan-1-mid": [
-        "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/0dc8f6e5-8958-4f33-a933-03fb5f8e0d59/air-jordan-1-mid-shoes-BpARcS.png",
     ],
     "jordan_air-jordan-3-retro": [
-        "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/x5po7lnjgw6qqzbnghre/air-jordan-3-retro-shoes.png",
     ],
     "jordan_air-jordan-4-retro": [
-        "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/i5sdgdhdbemq4pjucpzo/air-jordan-4-retro-shoes.png",
     ],
     "jordan_air-jordan-11-retro": [
-        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=90",
+        "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/nfgzptxbaqorqtotrdrt/air-jordan-11-retro-shoes.png",
     ],
     # Adidas
     "adidas_stan-smith": [
