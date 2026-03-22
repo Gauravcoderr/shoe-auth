@@ -15,15 +15,28 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return res.json();
 }
 
+async function authRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const res = await fetch(path, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json", ...options.headers },
+    ...options,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: "Request failed" }));
+    throw new Error(err.detail || "Request failed");
+  }
+  return res.json();
+}
+
 export const api = {
-  // Auth
+  // Auth (local Next.js API routes → Brevo email OTP)
   sendOtp: (email: string) =>
-    request("/auth/send-otp", { method: "POST", body: JSON.stringify({ email }) }),
-  verifyOtp: (email: string, otp: string, name?: string, phone?: string) =>
-    request<{ user: User }>("/auth/verify-otp", { method: "POST", body: JSON.stringify({ email, otp, name, phone }) }),
-  refresh: () => request<{ message: string }>("/auth/refresh", { method: "POST" }),
-  logout: () => request<{ message: string }>("/auth/logout", { method: "POST" }),
-  me: () => request<User>("/auth/me"),
+    authRequest("/api/auth/send-otp", { method: "POST", body: JSON.stringify({ email }) }),
+  verifyOtp: (email: string, otp: string) =>
+    authRequest<{ user: User }>("/api/auth/verify-otp", { method: "POST", body: JSON.stringify({ email, otp }) }),
+  refresh: () => Promise.resolve({ message: "ok" }),
+  logout: () => authRequest<{ ok: boolean }>("/api/auth/logout", { method: "POST" }),
+  me: () => authRequest<User>("/api/auth/me"),
 
   // Checks
   createCheck: (body: { brand: string; model: string; colorway: string; photos: { angle: string; url: string }[] }) =>
