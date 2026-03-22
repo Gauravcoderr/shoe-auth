@@ -6,9 +6,9 @@ export async function sendMail(options: { to: string; subject: string; html: str
     return;
   }
 
-  const senderName = (process.env.EMAIL_FROM || 'SNKRS CART <infosnkrscart@gmail.com>')
-    .match(/^(.*?)\s*</) ?.[1]?.trim() || 'SNKRS CART';
-  const senderEmail = (process.env.EMAIL_FROM || 'SNKRS CART <infosnkrscart@gmail.com>')
+  const senderName = (process.env.EMAIL_FROM || 'SneakerAuth <infosnkrscart@gmail.com>')
+    .match(/^(.*?)\s*</) ?.[1]?.trim() || 'SneakerAuth';
+  const senderEmail = (process.env.EMAIL_FROM || 'SneakerAuth <infosnkrscart@gmail.com>')
     .match(/<(.+?)>/) ?.[1] || 'infosnkrscart@gmail.com';
 
   console.log(`[mailer] Sending to ${options.to} | ${options.subject}`);
