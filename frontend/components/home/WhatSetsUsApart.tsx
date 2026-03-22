@@ -20,6 +20,7 @@ export default function WhatSetsUsApart() {
               src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9b0f3cc8-dc25-4e65-8f3d-c8ba1f15b2ba/dunk-low-retro-shoes-GGmM6z.png"
               alt="Sneaker authentication"
               fill
+              unoptimized
               className="object-cover object-center"
               sizes="(max-width: 640px) 100vw, 33vw"
             />
@@ -84,6 +85,7 @@ export default function WhatSetsUsApart() {
             src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/c5adc7bc-8bd9-4cf2-accc-81d63b0d73ea/dunk-low-retro-shoes-GGmM6z.png"
             alt="Sneakers on display"
             fill
+            unoptimized
             className="object-cover object-center"
             sizes="(max-width: 640px) 100vw, 33vw"
           />

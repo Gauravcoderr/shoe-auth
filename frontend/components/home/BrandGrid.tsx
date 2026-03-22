@@ -1,52 +1,10 @@
 import Link from "next/link";
 
 const BRANDS = [
-  {
-    name: "Nike",
-    slug: "nike",
-    bgClass: "bg-[#f7f7f4]",
-    logo: (
-      <svg viewBox="0 0 148 57" className="w-24 h-10 fill-[#111]" aria-label="Nike">
-        <path d="M14.088 57L148 10.965 98.14 0 0 34.95z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Air Jordan",
-    slug: "jordan",
-    bgClass: "bg-[#fef2f2]",
-    logo: (
-      // Jumpman silhouette
-      <svg viewBox="0 0 100 120" className="w-12 h-14 fill-[#dc2626]" aria-label="Air Jordan">
-        <path d="M50 2c-3 0-5.5 1-7.5 3-1.5 1.5-2.5 3.5-2.5 5.5 0 1.5.5 3 1.5 4.5-2-.5-3.5-.5-5 0-2.5.5-4.5 2-6 4.5-1 1.5-1 3.5-.5 5.5.5 2 2 3.5 4 4.5-2.5 1-5 2.5-7 5-2 2.5-3 5.5-2.5 8.5.5 3 2.5 5.5 5 7 1.5 1 3.5 1.5 5.5 1.5h1.5L22 70c-1.5 3.5-2 7.5-1.5 11.5s2 7.5 4.5 10.5l5.5 6.5c1 1 2 2.5 2.5 4l1.5 5c.5 1.5 1.5 3 3 4 1.5 1 3 1.5 4.5 1.5h1c1.5-.5 2.5-1.5 3-3 .5-1.5 0-3-.5-4l-2-3.5c-.5-1-1-2.5-1-4v-2l1-2.5 1.5-2c.5-1 1-2.5.5-4-.5-1.5-1.5-2.5-3-3l-2.5-.5c-.5 0-1 0-1.5-.5s-.5-1-.5-1.5c.5-2 2.5-4 5-6l7.5-5.5c3-2 5.5-4.5 7-7.5 1-2 1.5-4 1.5-6v-1.5l5 2c1.5.5 3 1 4.5 1 2.5 0 5-.5 7-2 2-1.5 3.5-3.5 4-6 .5-2.5 0-5-1.5-7-1.5-2-3.5-3.5-6-4-1-.5-2.5-.5-3.5-.5l-2 .5c1-1.5 1.5-3 1.5-5 0-2-.5-4-2-5.5C55.5 3 53 2 50 2z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Adidas",
-    slug: "adidas",
-    bgClass: "bg-[#f7f7f4]",
-    logo: (
-      <svg viewBox="0 0 200 80" className="w-28 h-12 fill-[#111]" aria-label="Adidas">
-        {/* Trefoil-style 3 bars mountain */}
-        <polygon points="100,0 145,80 55,80" />
-        <polygon points="55,80 100,0 145,80" fillOpacity="0" stroke="none" />
-        {/* text */}
-        <text x="100" y="75" textAnchor="middle" fontSize="22" fontFamily="Arial Black, sans-serif" fontWeight="900" fill="#111" dy="-5">adidas</text>
-      </svg>
-    ),
-  },
-  {
-    name: "New Balance",
-    slug: "new_balance",
-    bgClass: "bg-[#eff6ff]",
-    logo: (
-      <svg viewBox="0 0 120 60" className="w-24 h-12" aria-label="New Balance">
-        <text x="10" y="48" fontSize="56" fontFamily="Arial Black, sans-serif" fontWeight="900" fill="#1d4ed8">N</text>
-        <text x="60" y="48" fontSize="24" fontFamily="Arial Black, sans-serif" fontWeight="700" fill="#111">B</text>
-      </svg>
-    ),
-  },
+  { name: "Nike",        slug: "nike",        bgClass: "bg-white",     logo: "/logos/nike.svg",        logoClass: "w-28 h-10 object-contain" },
+  { name: "Air Jordan",  slug: "jordan",      bgClass: "bg-[#fef2f2]", logo: "/logos/jordan.svg",      logoClass: "w-16 h-20 object-contain" },
+  { name: "Adidas",      slug: "adidas",      bgClass: "bg-white",     logo: "/logos/adidas.svg",      logoClass: "w-24 h-16 object-contain" },
+  { name: "New Balance", slug: "new_balance", bgClass: "bg-[#eff6ff]", logo: "/logos/new-balance.svg", logoClass: "w-32 h-14 object-contain" },
 ];
 
 export default function BrandGrid() {
@@ -64,10 +22,9 @@ export default function BrandGrid() {
             href={`/check?brand=${brand.slug}`}
             className="group bg-white border border-[#e8e8e3] rounded-xl overflow-hidden hover:border-[#111] hover:shadow-sm transition-all"
           >
-            <div
-              className={`w-full h-28 flex items-center justify-center transition-colors duration-300 ${brand.bgClass}`}
-            >
-              {brand.logo}
+            <div className={`w-full h-28 flex items-center justify-center ${brand.bgClass}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={brand.logo} alt={brand.name} className={brand.logoClass} />
             </div>
             <div className="p-4">
               <div className="font-extrabold text-[#111] text-sm font-syne">{brand.name}</div>

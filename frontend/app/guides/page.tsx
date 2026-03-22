@@ -55,6 +55,7 @@ export default function GuidesPage() {
                 src={g.img}
                 alt={g.name}
                 fill
+                unoptimized
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
                 sizes="(max-width: 640px) 100vw, 50vw"
               />

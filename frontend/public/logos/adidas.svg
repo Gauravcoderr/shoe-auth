@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Adidas Performance mountain/3-bar logo -->
+  <polygon points="200,20 340,260 60,260" fill="none" stroke="#111" stroke-width="0"/>
+  <!-- Three stripes forming mountain -->
+  <polygon points="200,20 230,80 170,80" fill="#111"/>
+  <polygon points="200,20 280,160 240,160 210,100 190,100 160,160 120,160" fill="#111"/>
+  <polygon points="200,20 340,260 300,260 210,120 190,120 100,260 60,260" fill="#111"/>
+  <!-- White cutouts to make three bars visible -->
+  <polygon points="200,20 248,120 212,120 200,90 188,90 152,120 116,120 60,260 100,260 190,120 210,120 300,260 340,260" fill="white"/>
+  <polygon points="200,20 230,80 170,80 188,90 212,90" fill="white"/>
+</svg>

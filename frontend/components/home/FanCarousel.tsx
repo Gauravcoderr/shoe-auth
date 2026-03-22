@@ -107,6 +107,7 @@ export default function FanCarousel() {
                     src={card.img}
                     alt={card.brand}
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="148px"
                   />
@@ -134,15 +135,10 @@ function VerdictBadge({ verdict }: { verdict: "pass" | "fail" }) {
   const isPass = verdict === "pass";
   return (
     <span
-      className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-0.5 rounded-full w-fit"
-      style={{
-        background: isPass ? "#dcfce7" : "#fee2e2",
-        color: isPass ? "#16a34a" : "#dc2626",
-      }}
+      className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-0.5 rounded-full w-fit ${isPass ? "bg-[#dcfce7] text-[#16a34a]" : "bg-[#fee2e2] text-[#dc2626]"}`}
     >
       <span
-        className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-black"
-        style={{ background: isPass ? "#16a34a" : "#dc2626" }}
+        className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-black ${isPass ? "bg-[#16a34a]" : "bg-[#dc2626]"}`}
       >
         {isPass ? "✓" : "✕"}
       </span>
