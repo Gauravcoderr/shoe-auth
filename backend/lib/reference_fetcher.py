@@ -20,26 +20,24 @@ def _make_cache_key(brand: str, model: str, colorway: str) -> str:
     return "_".join(parts)
 
 
-# ─────────────────────────────────────────────
-# Source 1: KicksDB (kicks.dev) — KICKS- prefix key
-# ─────────────────────────────────────────────
 async def _fetch_kicksdb(brand: str, model: str, colorway: str) -> list[str]:
     key = getattr(settings, "SNEAKERS_API_KEY", "")
     query = f"{brand} {model} {colorway}".strip()
     try:
         async with httpx.AsyncClient(timeout=10) as client:
-            # Try v2 endpoint with Bearer auth
             resp = await client.get(
                 "https://kicks.dev/api/v2/products",
                 params={"q": query, "limit": 5},
                 headers={"Authorization": f"Bearer {key}"} if key else {},
             )
+            print(f"[ref] KicksDB v2 status={resp.status_code} body={resp.text[:300]}")
             if not resp.is_success:
-                # Fallback: v1 with api_key param
-                resp = await client.get(
+                resp2 = await client.get(
                     "https://kicks.dev/api/products",
                     params={"query": query, "limit": 5, "api_key": key},
                 )
+                print(f"[ref] KicksDB v1 status={resp2.status_code} body={resp2.text[:300]}")
+                resp = resp2
             resp.raise_for_status()
             data = resp.json()
             urls = []
@@ -49,14 +47,13 @@ async def _fetch_kicksdb(brand: str, model: str, colorway: str) -> list[str]:
                     url = product.get(field) or product.get("media", {}).get(field)
                     if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
+            print(f"[ref] KicksDB found {len(urls)} urls")
             return urls[:4]
-    except Exception:
+    except Exception as e:
+        print(f"[ref] KicksDB error: {e}")
         return []
 
 
-# ─────────────────────────────────────────────
-# Source 2: SneakersAPI.dev
-# ─────────────────────────────────────────────
 async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]:
     query = f"{brand} {model} {colorway}".strip()
     try:
@@ -65,6 +62,7 @@ async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]
                 "https://api.sneakersapi.dev/api/v3/products",
                 params={"q": query, "limit": 5},
             )
+            print(f"[ref] SneakersAPI status={resp.status_code} body={resp.text[:300]}")
             resp.raise_for_status()
             data = resp.json()
             urls = []
@@ -73,14 +71,13 @@ async def _fetch_sneakersapi(brand: str, model: str, colorway: str) -> list[str]
                     url = product.get("media", {}).get(field) or product.get(field)
                     if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
+            print(f"[ref] SneakersAPI found {len(urls)} urls")
             return urls[:4]
-    except Exception:
+    except Exception as e:
+        print(f"[ref] SneakersAPI error: {e}")
         return []
 
 
-# ─────────────────────────────────────────────
-# Source 3: The Sneaker Database
-# ─────────────────────────────────────────────
 async def _fetch_sneakerdatabase(brand: str, model: str) -> list[str]:
     try:
         async with httpx.AsyncClient(timeout=10) as client:
@@ -88,6 +85,7 @@ async def _fetch_sneakerdatabase(brand: str, model: str) -> list[str]:
                 "https://api.thesneakerdatabase.com/v1/sneakers",
                 params={"limit": 5, "name": model, "brand": brand},
             )
+            print(f"[ref] SneakerDB status={resp.status_code} body={resp.text[:300]}")
             resp.raise_for_status()
             data = resp.json()
             urls = []
@@ -97,21 +95,20 @@ async def _fetch_sneakerdatabase(brand: str, model: str) -> list[str]:
                     url = media.get(field)
                     if url and isinstance(url, str) and url.startswith("http") and url not in urls:
                         urls.append(url)
+            print(f"[ref] SneakerDB found {len(urls)} urls")
             return urls[:4]
-    except Exception:
+    except Exception as e:
+        print(f"[ref] SneakerDB error: {e}")
         return []
 
 
-# ─────────────────────────────────────────────
-# Source 4: Google Custom Search Images
-# ─────────────────────────────────────────────
 async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
     api_key = getattr(settings, "GOOGLE_API_KEY", "")
     cx = getattr(settings, "GOOGLE_SEARCH_ENGINE_ID", "")
     if not api_key or not cx:
+        print("[ref] Google skipped — missing GOOGLE_API_KEY or GOOGLE_SEARCH_ENGINE_ID")
         return []
-    # Simple query without site: restriction — works better with image search
-    query = f"{brand} {model} {colorway} authentic sneaker".strip()
+    query = f"{brand} {model} {colorway} sneaker".strip()
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.get(
@@ -123,38 +120,34 @@ async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
                     "searchType": "image",
                     "num": 6,
                     "imgType": "photo",
-                    "imgSize": "medium",
                     "safe": "active",
                 },
             )
+            print(f"[ref] Google status={resp.status_code} body={resp.text[:500]}")
             resp.raise_for_status()
             data = resp.json()
-            return [
+            urls = [
                 item["link"] for item in data.get("items", [])
                 if item.get("link") and item["link"].startswith("http")
             ][:4]
-    except Exception:
+            print(f"[ref] Google found {len(urls)} urls: {urls}")
+            return urls
+    except Exception as e:
+        print(f"[ref] Google error: {e}")
         return []
 
 
-# ─────────────────────────────────────────────
-# Main entry point
-# ─────────────────────────────────────────────
 async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[dict]:
-    """
-    Returns list of {"url": str, "angle": "reference"} dicts.
-    Tries: MongoDB cache → KicksDB → SneakersAPI → SneakerDatabase → Google.
-    Empty results are NOT cached so they retry on next request.
-    """
     db = get_db()
     cache_key = _make_cache_key(brand, model, colorway)
 
-    # 1. Check cache (only stored when results were found)
     cached = await db.reference_images.find_one({"cache_key": cache_key})
     if cached:
+        print(f"[ref] Cache hit for {cache_key}")
         return cached.get("images", [])
 
-    # 2-5. Try each source
+    print(f"[ref] Fetching references for: {brand} / {model} / {colorway}")
+
     urls: list[str] = []
     for fetcher, args in [
         (_fetch_kicksdb, (brand, model, colorway)),
@@ -167,11 +160,11 @@ async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[
             break
 
     if not urls:
-        return []  # Don't cache empty — retry next time
+        print(f"[ref] All sources failed for {cache_key}")
+        return []
 
     images = [{"url": u, "angle": "reference"} for u in urls]
 
-    # Cache only successful results (30-day TTL via MongoDB index)
     try:
         await db.reference_images.update_one(
             {"cache_key": cache_key},
@@ -185,7 +178,7 @@ async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[
             }},
             upsert=True,
         )
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"[ref] Cache write failed: {e}")
 
     return images
