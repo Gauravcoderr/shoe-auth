@@ -37,18 +37,6 @@ const BRAND_GUIDES: Record<string, { name: string; intro: string; checks: { titl
       { title: "Continental sole tread", detail: "On Stan Smith and other models, the Continental tire tread pattern should be razor-sharp. Fakes have a blurred, slightly melted-looking tread." },
     ],
   },
-  yeezy: {
-    name: "Yeezy",
-    intro: "Yeezy 350 V2 is one of the hardest shoes to fake correctly due to the Primeknit pattern. Here's what to look for.",
-    checks: [
-      { title: "Primeknit diagonal lines (350 V2)", detail: "The Primeknit on Yeezy 350 V2 has a specific diagonal stripe pattern. These lines must be perfectly parallel and consistently angled. Fakes almost always have slightly irregular diagonal lines." },
-      { title: "BOOST sole texture", detail: "The BOOST pellets on a Yeezy should be irregular in size and loosely arranged. Fakes use uniform round pellets in a grid — a major tell." },
-      { title: "Inner label lockstitch", detail: "The tongue/inner label should be sewn with a tight lockstitch that won't unravel. Fakes use chain stitch — pull a thread and it comes apart easily." },
-      { title: "Heel tab alignment", detail: "The rear pull tab should sit perfectly flush against the heel counter. Fakes often have a tab that sticks out slightly or is angled." },
-      { title: "Monofilament stripe", detail: "The translucent stripe running around the shoe on 350 V2 should be perfectly straight and consistent width. Fakes have wavy or inconsistent monofilament." },
-      { title: "ADIDAS YEEZY insole text", detail: "Authentic Yeezy 350 insoles have the ADIDAS YEEZY text embossed (raised or pressed). Fakes print it on flat, which you can feel with your finger." },
-    ],
-  },
   "new-balance": {
     name: "New Balance",
     intro: "New Balance fakes are increasing. Key checkpoints for 550, 990 series and other popular models.",
@@ -58,36 +46,6 @@ const BRAND_GUIDES: Record<string, { name: string; intro: string; checks: { titl
       { title: "ENCAP midsole ring (990 series)", detail: "The 990 series ENCAP system shows as a distinct white ring visible from the side, between the outer rubber and inner foam. Fakes blur this line or make it inconsistent." },
       { title: "Suede quality", detail: "The suede on NB 550 should be fine-grain and even. Run your finger against the grain — it should feel smooth and consistent. Fakes use rougher, cheaper suede." },
       { title: "Made in USA stitching", detail: "USA-made NB models have a specific internal stitch pattern and different lining material. Fakes are always made in China and lack the USA finishing details." },
-    ],
-  },
-  puma: {
-    name: "Puma",
-    intro: "Key authentication checkpoints for Puma sneakers.",
-    checks: [
-      { title: "Formstrip width & angle", detail: "The Puma formstrip (side stripe) should be a consistent width following a specific angle. Fakes often make it too wide, too narrow, or at the wrong angle." },
-      { title: "Puma cat logo", detail: "The leaping cat logo has very specific proportions. Fakes often make the cat too large, too small, or change the angle of the leap." },
-      { title: "Suede texture (Suede Classic)", detail: "The Puma Suede Classic upper should have fine, even suede. Fakes use a coarser material that looks rougher and less consistent." },
-      { title: "Outsole flexibility", detail: "Authentic Puma Suede soles use a slightly flexible rubber. Fakes often use a harder, more plastic-like sole that feels stiffer and sounds different when tapped." },
-    ],
-  },
-  reebok: {
-    name: "Reebok",
-    intro: "Authentication guide for Reebok Classic Leather, Club C, and other popular silhouettes.",
-    checks: [
-      { title: "Vector logo (Union Jack)", detail: "The Reebok vector logo consists of the Union Jack design. The lines must be perfectly parallel and evenly spaced. Any waviness or uneven spacing is a fake tell." },
-      { title: "Classic Leather tongue label", detail: "The tongue label font on Classic Leather should be clean with sharp edges. Check the font weight — fakes often use a slightly different weight that looks 'off'." },
-      { title: "Hexalite cushioning", detail: "Hexalite cushioning shows as hexagonal shapes in the midsole. Authentic Reebok Hexalite has a precise honeycomb pattern. Fakes have irregular or blurry hexagons." },
-      { title: "DMX air channels", detail: "The DMX foam channel pattern on the outsole should be clean and symmetrical. Fakes have irregular channel depths or a simplified pattern." },
-    ],
-  },
-  asics: {
-    name: "Asics",
-    intro: "Asics authentication guide for Gel-Kayano 14, GT-2160, and other popular models.",
-    checks: [
-      { title: "Onitsuka Tiger / ASICS stripes", detail: "The stripes on Asics uppers should be consistent width at a specific angle. Fakes often get the angle slightly wrong or make the stripes too wide." },
-      { title: "GEL cushioning unit", detail: "The GEL unit should be translucent silicone gel, not solid rubber. Hold the shoe up to light — you should see through the GEL area. Fakes use opaque rubber." },
-      { title: "Reflective panels texture", detail: "Reflective panels on Gel-Lyte series have a fine honeycomb texture. Fakes use flat reflective material without the texture." },
-      { title: "Tongue gusset", detail: "The gusset (fabric connecting tongue to upper) should be securely stitched on both sides. Fakes often omit the gusset or have it poorly attached on one side." },
     ],
   },
 };
@@ -101,9 +59,9 @@ export default function BrandGuidePage({ params }: Props) {
 
   if (!guide) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-        <p className="text-[#555] mb-4">Guide not found.</p>
-        <Link href="/guides" className="text-white font-semibold text-sm hover:text-[#888] transition-colors">
+      <div className="max-w-2xl mx-auto px-5 py-24 text-center">
+        <p className="text-[#aaa] mb-4">Guide not found.</p>
+        <Link href="/guides" className="text-[#111] font-semibold text-sm hover:text-[#555] transition-colors">
           ← All guides
         </Link>
       </div>
@@ -111,24 +69,24 @@ export default function BrandGuidePage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12">
-      <Link href="/guides" className="text-xs text-[#444] hover:text-[#888] mb-8 inline-block uppercase tracking-widest transition-colors">
+    <div className="max-w-2xl mx-auto px-5 py-14">
+      <Link href="/guides" className="text-xs text-[#bbb] hover:text-[#666] mb-8 inline-block uppercase tracking-widest transition-colors font-syne">
         ← All guides
       </Link>
 
-      <div className="mb-10">
-        <p className="text-xs text-[#555] uppercase tracking-widest mb-3">Authentication Guide</p>
-        <h1 className="text-3xl font-extrabold text-white mb-3 font-syne">
+      <div className="mb-12">
+        <p className="text-xs text-[#bbb] uppercase tracking-widest mb-3 font-syne">Authentication Guide</p>
+        <h1 className="text-4xl font-extrabold text-[#111] mb-4 font-syne">
           How to spot fake {guide.name} sneakers
         </h1>
-        <p className="text-[#555] text-sm leading-relaxed">{guide.intro}</p>
+        <p className="text-[#666] text-sm leading-relaxed">{guide.intro}</p>
       </div>
 
       <div className="space-y-3">
         {guide.checks.map((check, i) => (
-          <div key={i} className="bg-[#111] border border-[#1f1f1f] rounded-xl p-5">
-            <h2 className="font-extrabold text-white mb-2 font-syne text-sm">
-              <span className="text-[#333] mr-3 font-mono">{String(i + 1).padStart(2, "0")}</span>
+          <div key={i} className="bg-white border border-[#e8e8e3] rounded-xl p-5 hover:shadow-sm transition-shadow">
+            <h2 className="font-extrabold text-[#111] mb-2 font-syne text-sm flex items-center gap-3">
+              <span className="text-xs text-[#ccc] font-mono font-normal">{String(i + 1).padStart(2, "0")}</span>
               {check.title}
             </h2>
             <p className="text-sm text-[#666] leading-relaxed">{check.detail}</p>
@@ -136,12 +94,12 @@ export default function BrandGuidePage({ params }: Props) {
         ))}
       </div>
 
-      <div className="mt-10 p-6 bg-[#111] border border-[#1f1f1f] rounded-2xl text-center">
+      <div className="mt-12 p-8 bg-[#111] rounded-2xl text-center">
         <h3 className="font-extrabold text-white mb-2 font-syne">Want AI to check these for you?</h3>
-        <p className="text-[#555] text-sm mb-5">Upload your shoe photos and our AI checks all these points automatically.</p>
+        <p className="text-[#666] text-sm mb-6">Upload your shoe photos and our AI checks all these points automatically.</p>
         <Link
-          href={`/check?brand=${params.brand}`}
-          className="inline-block bg-white text-black px-6 py-3 rounded-xl text-sm font-bold hover:bg-[#e5e5e5] transition-colors font-syne"
+          href={`/check?brand=${params.brand === "new-balance" ? "new_balance" : params.brand}`}
+          className="inline-block bg-white text-black px-8 py-3 rounded-xl text-sm font-bold hover:bg-[#e5e5e5] transition-colors font-syne"
         >
           Check a {guide.name} pair →
         </Link>
