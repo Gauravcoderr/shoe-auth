@@ -2,6 +2,7 @@
 Reference image fetcher for sneaker authentication.
 Tries multiple free sources with fallbacks. Caches results in MongoDB (30-day TTL).
 Empty results are NOT cached so failed lookups retry on next request.
+Priority: Google CSE → SneakersAPI → SneakerDatabase → KicksDB
 """
 import re
 import httpx
@@ -20,37 +21,38 @@ def _make_cache_key(brand: str, model: str, colorway: str) -> str:
     return "_".join(parts)
 
 
-async def _fetch_kicksdb(brand: str, model: str, colorway: str) -> list[str]:
-    key = getattr(settings, "SNEAKERS_API_KEY", "")
-    query = f"{brand} {model} {colorway}".strip()
+async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
+    api_key = getattr(settings, "GOOGLE_API_KEY", "")
+    cx = getattr(settings, "GOOGLE_SEARCH_ENGINE_ID", "")
+    if not api_key or not cx:
+        print("[ref] Google skipped — missing GOOGLE_API_KEY or GOOGLE_SEARCH_ENGINE_ID")
+        return []
+    query = f"{brand} {model} {colorway} sneaker official".strip()
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
+        async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.get(
-                "https://kicks.dev/api/v2/products",
-                params={"q": query, "limit": 5},
-                headers={"Authorization": f"Bearer {key}"} if key else {},
+                "https://www.googleapis.com/customsearch/v1",
+                params={
+                    "key": api_key,
+                    "cx": cx,
+                    "q": query,
+                    "searchType": "image",
+                    "num": 6,
+                    "imgType": "photo",
+                    "safe": "active",
+                },
             )
-            print(f"[ref] KicksDB v2 status={resp.status_code} body={resp.text[:300]}")
-            if not resp.is_success:
-                resp2 = await client.get(
-                    "https://kicks.dev/api/products",
-                    params={"query": query, "limit": 5, "api_key": key},
-                )
-                print(f"[ref] KicksDB v1 status={resp2.status_code} body={resp2.text[:300]}")
-                resp = resp2
+            print(f"[ref] Google status={resp.status_code} body={resp.text[:500]}")
             resp.raise_for_status()
             data = resp.json()
-            urls = []
-            items = data if isinstance(data, list) else data.get("products", data.get("data", data.get("results", [])))
-            for product in items:
-                for field in ("imageUrl", "image", "thumbnail", "picture", "img"):
-                    url = product.get(field) or product.get("media", {}).get(field)
-                    if url and isinstance(url, str) and url.startswith("http") and url not in urls:
-                        urls.append(url)
-            print(f"[ref] KicksDB found {len(urls)} urls")
-            return urls[:4]
+            urls = [
+                item["link"] for item in data.get("items", [])
+                if item.get("link") and item["link"].startswith("http")
+            ][:4]
+            print(f"[ref] Google found {len(urls)} urls: {urls}")
+            return urls
     except Exception as e:
-        print(f"[ref] KicksDB error: {e}")
+        print(f"[ref] Google error: {e}")
         return []
 
 
@@ -102,38 +104,36 @@ async def _fetch_sneakerdatabase(brand: str, model: str) -> list[str]:
         return []
 
 
-async def _fetch_google(brand: str, model: str, colorway: str) -> list[str]:
-    api_key = getattr(settings, "GOOGLE_API_KEY", "")
-    cx = getattr(settings, "GOOGLE_SEARCH_ENGINE_ID", "")
-    if not api_key or not cx:
-        print("[ref] Google skipped — missing GOOGLE_API_KEY or GOOGLE_SEARCH_ENGINE_ID")
-        return []
-    query = f"{brand} {model} {colorway} sneaker".strip()
+async def _fetch_kicksdb(brand: str, model: str, colorway: str) -> list[str]:
+    key = getattr(settings, "SNEAKERS_API_KEY", "")
+    query = f"{brand} {model} {colorway}".strip()
+    # Try the correct kicks.dev API endpoint
+    endpoints = [
+        ("https://kicks.dev/api/v1/products", {"query": query, "limit": 5, "api_key": key}),
+        ("https://kicks.dev/api/v2/products", {"q": query, "limit": 5}),
+    ]
     try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            resp = await client.get(
-                "https://www.googleapis.com/customsearch/v1",
-                params={
-                    "key": api_key,
-                    "cx": cx,
-                    "q": query,
-                    "searchType": "image",
-                    "num": 6,
-                    "imgType": "photo",
-                    "safe": "active",
-                },
-            )
-            print(f"[ref] Google status={resp.status_code} body={resp.text[:500]}")
-            resp.raise_for_status()
-            data = resp.json()
-            urls = [
-                item["link"] for item in data.get("items", [])
-                if item.get("link") and item["link"].startswith("http")
-            ][:4]
-            print(f"[ref] Google found {len(urls)} urls: {urls}")
-            return urls
+        async with httpx.AsyncClient(timeout=10) as client:
+            for url, params in endpoints:
+                headers = {"X-Api-Key": key} if key else {}
+                resp = await client.get(url, params=params, headers=headers)
+                print(f"[ref] KicksDB {url} status={resp.status_code} body={resp.text[:300]}")
+                if resp.is_success:
+                    data = resp.json()
+                    urls = []
+                    items = data if isinstance(data, list) else data.get("products", data.get("data", data.get("results", [])))
+                    for product in items:
+                        for field in ("imageUrl", "image", "thumbnail", "picture", "img"):
+                            img_url = product.get(field) or product.get("media", {}).get(field)
+                            if img_url and isinstance(img_url, str) and img_url.startswith("http") and img_url not in urls:
+                                urls.append(img_url)
+                    if urls:
+                        print(f"[ref] KicksDB found {len(urls)} urls")
+                        return urls[:4]
+            print("[ref] KicksDB: no results from any endpoint")
+            return []
     except Exception as e:
-        print(f"[ref] Google error: {e}")
+        print(f"[ref] KicksDB error: {e}")
         return []
 
 
@@ -150,10 +150,10 @@ async def fetch_reference_images(brand: str, model: str, colorway: str) -> list[
 
     urls: list[str] = []
     for fetcher, args in [
-        (_fetch_kicksdb, (brand, model, colorway)),
+        (_fetch_google, (brand, model, colorway)),
         (_fetch_sneakersapi, (brand, model, colorway)),
         (_fetch_sneakerdatabase, (brand, model)),
-        (_fetch_google, (brand, model, colorway)),
+        (_fetch_kicksdb, (brand, model, colorway)),
     ]:
         urls = await fetcher(*args)
         if urls:
