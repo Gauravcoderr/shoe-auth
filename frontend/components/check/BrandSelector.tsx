@@ -5,26 +5,22 @@ const BRANDS = [
   {
     slug: "nike",
     name: "Nike",
-    // verified HTTP 200, image/svg+xml
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg",
+    logo: "https://res.cloudinary.com/dgyrjlb14/image/upload/v1779183952/brand-logos/nike.svg",
   },
   {
     slug: "jordan",
     name: "Jordan",
-    // verified HTTP 200, image/svg+xml
-    logo: "https://upload.wikimedia.org/wikipedia/en/3/37/Jumpman_logo.svg",
+    logo: "https://res.cloudinary.com/dgyrjlb14/image/upload/v1779183956/brand-logos/jordan.svg",
   },
   {
     slug: "adidas",
     name: "Adidas",
-    // verified HTTP 200, image/svg+xml
-    logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg",
+    logo: "https://res.cloudinary.com/dgyrjlb14/image/upload/v1779183963/brand-logos/adidas.svg",
   },
   {
     slug: "new_balance",
     name: "New Balance",
-    // verified HTTP 200, image/png (SVG served as xml — use PNG thumbnail)
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/300px-New_Balance_logo.svg.png",
+    logo: "https://res.cloudinary.com/dgyrjlb14/image/upload/v1779183987/brand-logos/new-balance.svg",
   },
 ];
 
