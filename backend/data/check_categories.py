@@ -676,6 +676,149 @@ CHECK_CATEGORIES: List[Dict] = [
                 "weight": 3,
                 "critical": True,
             },
+            {
+                "id": "serial_qr_tag",
+                "label": "QR / NFC Tag (if present on release)",
+                "photo": "box-label",
+                "description": "Some premium releases (e.g. Nike SNKRS limited drops, Adidas Verified) include a scannable QR code or NFC tag on the box or hang tag linking to a digital certificate. If visible, confirm the QR code is not blurry, cropped, or replaced with a copied image. Mark as SKIPPED if the specific release does not include a QR tag.",
+                "weight": 2,
+                "critical": False,
+            },
+        ],
+    },
+    # ─────────────────────────────────────────────────────────────
+    # NEW CATEGORIES — added to match industry-standard checks
+    # ─────────────────────────────────────────────────────────────
+    {
+        "category": "Image Authenticity",
+        "checks": [
+            {
+                "id": "img_real_shoe",
+                "label": "Physical Shoe vs Flat Image",
+                "photo": "side-lateral",
+                "description": "Confirm the submitted photo shows a real 3-dimensional shoe being photographed, NOT a flat marketing image, screenshot, stock photo, or a photo of a photo. Real shoe evidence: cast shadow under the sole, depth-of-field background blur, lace drape following gravity, surface glare or highlight on leather/patent. Fake evidence: perfectly flat studio lighting, pure white or digitally cut-out background, no cast shadows, screen moiré/pixel grid visible, printed-page glare, image-within-an-image framing. CRITICAL: if this fails, set overall_verdict to inconclusive regardless of other checks.",
+                "weight": 3,
+                "critical": True,
+            },
+            {
+                "id": "img_exif_validation",
+                "label": "Camera EXIF Metadata Present",
+                "photo": "side-lateral",
+                "description": "If EXIF metadata context was extracted before analysis, confirm it shows real camera data: camera make/model, focal length, ISO, shutter speed. Screenshots, stock images, and AI-generated images typically have no EXIF or only software tags (e.g. 'Adobe Photoshop', 'Screenshot'). If EXIF confirms a real camera device, note it as supporting evidence. If EXIF is absent or software-only, treat as a weak fake-image signal.",
+                "weight": 2,
+                "critical": True,
+            },
+            {
+                "id": "img_no_manipulation",
+                "label": "No Digital Manipulation or Cut-out Background",
+                "photo": "side-lateral",
+                "description": "Check for signs of digital editing: clone-stamped areas (repeating texture patches), impossibly clean or gradient backgrounds, color banding from compression artifacts, or halo effects around the shoe edges indicating a cutout/composited image. Any of these suggests the photo was edited to hide defects or that it is a stock image.",
+                "weight": 2,
+                "critical": True,
+            },
+            {
+                "id": "img_shadows_depth",
+                "label": "3-D Depth Cues Present",
+                "photo": "side-lateral",
+                "description": "Confirm natural 3D depth cues are present across at least two photos: cast shadow beneath the sole on the surface it rests on, specular highlight on patent leather or glossy midsole, slight fisheye/perspective distortion from a real lens, background objects slightly out of focus. Absence of ALL depth cues across ALL photos (perfectly flat lighting, every surface in perfect focus) is a strong indicator of a stock/CGI image.",
+                "weight": 2,
+                "critical": True,
+            },
+            {
+                "id": "img_reverse_image_check",
+                "label": "Not a Known Stock or Marketing Image",
+                "photo": "side-lateral",
+                "description": "Look for visual tells that this is an official brand marketing/press image: perfectly symmetrical lighting with two equal key-light shadows, shoe floating mid-air on pure white, exact same angle as product page thumbnails, watermarks or brand URL text visible, or newsprint dot pattern (photo of a magazine page). If any of these are detected, flag as a stock image submission.",
+                "weight": 1,
+                "critical": False,
+            },
+        ],
+    },
+    {
+        "category": "Condition Assessment",
+        "checks": [
+            {
+                "id": "cond_sole_wear",
+                "label": "Sole Wear Pattern",
+                "photo": "sole",
+                "description": "Assess the level of wear on the outsole tread across the bottom photo. Record in notes: 'none' (factory fresh, tread fully intact), 'light' (minor scuffs on heel/toe, tread lugs intact), 'moderate' (visible tread flattening in high-contact zones, heel drag marks), or 'heavy' (significant tread worn through, exposed midsole in spots). This is an INFORMATIONAL check only — sole wear does not indicate fake. Always return result='pass'.",
+                "weight": 1,
+                "critical": False,
+            },
+            {
+                "id": "cond_upper_cleanliness",
+                "label": "Upper Surface Condition",
+                "photo": "side-lateral",
+                "description": "Assess the cleanliness and condition of the upper material across all available photos. Record in notes: 'clean' (no visible dirt, scuffs, or creasing), 'scuffed' (minor surface marks but no staining), 'dirty' (visible dirt, dust, or grime), or 'stained' (permanent discoloration or stains). Lightly worn shoes may show toe box creasing — note this. This is INFORMATIONAL only. Always return result='pass'.",
+                "weight": 1,
+                "critical": False,
+            },
+            {
+                "id": "cond_midsole_oxidation",
+                "label": "Midsole Yellowing / Oxidation Level",
+                "photo": "side-lateral",
+                "description": "Assess the degree of midsole oxidation (yellowing) visible on the midsole sidewall. Record in notes: 'none' (bright, near-original color), 'slight' (faint yellowing visible in good light), 'moderate' (clearly yellow-toned, visible in normal light), or 'heavy' (deeply yellowed or brownish, significant age/use). Note: heavy oxidation on a supposedly new shoe is suspicious. This is INFORMATIONAL. Always return result='pass'.",
+                "weight": 1,
+                "critical": False,
+            },
+            {
+                "id": "cond_lace_condition",
+                "label": "Lace Condition",
+                "photo": "top-down",
+                "description": "Assess whether laces appear to be original factory laces in good condition or replacement laces. Record in notes: 'original-clean' (OEM laces, no fraying or staining), 'original-worn' (OEM laces showing dirt, fraying, or stretching), or 'replacement' (visibly non-OEM laces — wrong width, color, or material for this model). This is INFORMATIONAL only. Always return result='pass'.",
+                "weight": 1,
+                "critical": False,
+            },
+            {
+                "id": "cond_overall",
+                "label": "Overall Condition Grade",
+                "photo": "side-lateral",
+                "description": "Based on all condition checks (sole wear, upper cleanliness, midsole oxidation, lace condition), assign an overall condition grade. Record EXACTLY ONE of these values in notes: 'new' (deadstock, no signs of wear), 'like-new' (tried on but no actual wear), 'lightly-used' (minimal wear, great condition), 'moderately-used' (visible wear but still in good shape), or 'heavily-worn' (significant wear throughout). This is INFORMATIONAL only — it does not affect the authenticity verdict. Always return result='pass'.",
+                "weight": 1,
+                "critical": False,
+            },
+        ],
+    },
+    # ─────────────────────────────────────────────────────────────
+    # NEW CHECKS added to existing categories (appended inline above
+    # via category extension in prompt builder); additional standalone
+    # checks surfaced here for prompt coverage:
+    # ─────────────────────────────────────────────────────────────
+    {
+        "category": "Construction Details",
+        "checks": [
+            {
+                "id": "adhesive_bond_quality",
+                "label": "Adhesive Bond Uniformity Along Seams",
+                "photo": "side-lateral",
+                "description": "Used by GOAT and StockX authenticators: inspect the seam line where upper meets midsole for adhesive quality. Authentic shoes show a razor-clean bond with no visible glue bead, squeeze-out, or gap. Fake tells: yellowish glue bead wider than 1mm extruding from the seam, paint bleeding onto the upper at the bond line, or visible gap between upper and midsole indicating bond failure. Check all the way around the perimeter.",
+                "weight": 2,
+                "critical": True,
+            },
+            {
+                "id": "heatstamp_emboss_quality",
+                "label": "Heat-stamp / Emboss Quality",
+                "photo": "heel",
+                "description": "Used by Legit Check authenticators: logos that are heat-stamped or embossed (Jumpman on Jordan heel tab, Adidas trefoil on leather, Nike Swoosh emboss on some colorways) must have consistent depth, crisp raised edges, and no smearing. Fake tells: shallow impressions that barely indent the material, blurry outline where the stamp foil shifted during pressing, or uneven depth across the emboss area. Contrast against the reference image for depth comparison.",
+                "weight": 2,
+                "critical": True,
+            },
+            {
+                "id": "collar_padding_symmetry",
+                "label": "Collar Padding Symmetry",
+                "photo": "heel",
+                "description": "Used by Legit Check and GOAT: viewed from directly behind, the foam padding thickness around the ankle collar should be perfectly symmetric — equal thickness on the left and right sides of the opening. Fakes with uneven padding density cause the collar to appear lopsided from behind. Look for the collar oval shape — it should be a uniform rounded rectangle, not D-shaped or thicker on one side.",
+                "weight": 1,
+                "critical": False,
+            },
+            {
+                "id": "box_accessories_check",
+                "label": "Packaging Accessories Present",
+                "photo": "box-label",
+                "description": "Used by CheckCheck and GOAT: authentic shoes ship with correct accessories: white acid-free tissue paper wrapping the shoe, brand-specific hang tag, extra laces (if part of colorway spec), and dust bag (premium colorways). Check for: presence of tissue paper (not yellow newsprint), correctly branded hang tag font, and extra lace bag if the release included one. Missing accessories or wrong-color tissue (yellow, brown) suggests repackaging. Mark as SKIPPED if box interior is not visible.",
+                "weight": 1,
+                "critical": False,
+            },
         ],
     },
 ]

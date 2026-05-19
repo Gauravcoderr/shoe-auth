@@ -4,6 +4,7 @@ import { AuthCheck } from "@/types";
 import VerdictBadge from "./VerdictBadge";
 import CheckItemRow from "./CheckItemRow";
 import AuthCertificate from "./AuthCertificate";
+import ConditionBadge from "./ConditionBadge";
 import Link from "next/link";
 
 interface Props {
@@ -48,12 +49,29 @@ export default function ResultsCard({ check }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto px-5 py-14">
+      {/* Image authenticity warning */}
+      {typeof check.image_authenticity_score === "number" && check.image_authenticity_score < 70 && (
+        <div className="mb-5 p-4 bg-[#fffbeb] border border-[#fde68a] rounded-xl flex items-start gap-3">
+          <span className="text-[#d97706] text-lg mt-0.5">⚠</span>
+          <p className="text-sm text-[#92400e] leading-relaxed">
+            <strong>Photo quality warning:</strong> Some submitted photos may not show a real physical shoe (possible stock image or screenshot). Results may be less accurate — please resubmit with fresh camera photos of the actual shoe.
+          </p>
+        </div>
+      )}
+
       <div className="mb-6">
         <p className="text-xs text-[#bbb] uppercase tracking-widest mb-2 font-syne">Authentication Result</p>
-        <h1 className="text-3xl font-extrabold text-[#111] font-syne">
-          {check.brand.charAt(0).toUpperCase() + check.brand.slice(1)} — {check.model}
-          {check.colorway && <span className="text-[#aaa] font-normal"> ({check.colorway})</span>}
-        </h1>
+        <div className="flex items-start gap-3 flex-wrap">
+          <h1 className="text-3xl font-extrabold text-[#111] font-syne">
+            {check.brand.charAt(0).toUpperCase() + check.brand.slice(1)} — {check.model}
+            {check.colorway && <span className="text-[#aaa] font-normal"> ({check.colorway})</span>}
+          </h1>
+          {check.condition && (
+            <div className="mt-1.5">
+              <ConditionBadge condition={check.condition} />
+            </div>
+          )}
+        </div>
       </div>
 
       <VerdictBadge
@@ -87,6 +105,32 @@ export default function ResultsCard({ check }: Props) {
           <div className="text-[10px] text-[#dc2626]/70 uppercase tracking-wider mt-0.5">Failed</div>
         </div>
       </div>
+
+      {/* Risk & Consistency scores */}
+      {(typeof check.risk_score === "number" || typeof check.consistency_score === "number") && (
+        <div className="flex gap-3 mb-6">
+          {typeof check.risk_score === "number" && (
+            <div className="flex-1 bg-white border border-[#e8e8e3] rounded-xl p-4 text-center shadow-sm">
+              <div className={`text-2xl font-extrabold font-syne ${
+                check.risk_score >= 60 ? "text-[#dc2626]" : check.risk_score >= 30 ? "text-[#d97706]" : "text-[#16a34a]"
+              }`}>
+                {check.risk_score}
+              </div>
+              <div className="text-[10px] text-[#bbb] uppercase tracking-wider mt-0.5">Risk Score</div>
+            </div>
+          )}
+          {typeof check.consistency_score === "number" && (
+            <div className="flex-1 bg-white border border-[#e8e8e3] rounded-xl p-4 text-center shadow-sm">
+              <div className={`text-2xl font-extrabold font-syne ${
+                check.consistency_score >= 80 ? "text-[#16a34a]" : check.consistency_score >= 50 ? "text-[#d97706]" : "text-[#dc2626]"
+              }`}>
+                {check.consistency_score}
+              </div>
+              <div className="text-[10px] text-[#bbb] uppercase tracking-wider mt-0.5">Consistency</div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Expert tips callout */}
       {failCount > 0 && (

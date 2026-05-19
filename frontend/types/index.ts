@@ -24,6 +24,12 @@ export interface AuthCheck {
   verdict_confidence: number;
   verdict_summary: string;
   processing_status: "pending" | "processing" | "complete" | "failed";
+  // Condition & image authenticity
+  condition?: "new" | "like-new" | "lightly-used" | "moderately-used" | "heavily-worn";
+  image_authenticity_score?: number;
+  // Risk & consistency scores (computed by AI, now surfaced to UI)
+  risk_score?: number;
+  consistency_score?: number;
   created_at: string;
 }
 

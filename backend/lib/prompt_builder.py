@@ -9,6 +9,8 @@ def build_prompt(
     colorway: str,
     photo_angles: list[str] = None,
     has_reference_images: bool = False,
+    exif_summaries: list[str] = None,
+    decoded_barcode: str = None,
 ) -> str:
     brand = get_brand(brand_slug)
     brand_name = brand["name"] if brand else brand_slug.title()
@@ -52,6 +54,35 @@ No official reference images were found. Rely on your trained knowledge of authe
 """.format(brand_name=brand_name, model=model)
     )
 
+    # Build optional context blocks for EXIF and barcode
+    exif_context = ""
+    if exif_summaries:
+        lines = "\n".join(f"  - {s}" for s in exif_summaries if s)
+        exif_context = f"""
+====================================
+PRE-ANALYSIS CONTEXT: PHOTO METADATA
+====================================
+The following EXIF metadata was extracted from the submitted photos before analysis.
+Use this as supporting evidence when evaluating the Image Authenticity checks.
+
+{lines}
+
+"""
+
+    barcode_context = ""
+    if decoded_barcode:
+        barcode_context = f"""
+====================================
+PRE-ANALYSIS CONTEXT: DECODED BARCODE
+====================================
+A barcode was automatically decoded from the box-label photo:
+  Decoded value: {decoded_barcode}
+
+Use this when evaluating box_barcode and serial_format checks — the decoded digits
+must match the style code on the label and match the brand's expected serial_format.
+
+"""
+
     return f"""
 You are a MULTI-STAGE professional sneaker authentication engine with expertise equivalent to
 10+ years of hands-on authentication experience with {brand_name} footwear.
@@ -63,7 +94,52 @@ SHOE BEING ANALYZED
 - Model: {model}
 - Colorway: {colorway or "Unknown"}
 
-{reference_section}====================================
+{reference_section}{exif_context}{barcode_context}====================================
+STAGE 0 — PHYSICAL REALITY & IMAGE AUTHENTICITY (MANDATORY FIRST STEP)
+====================================
+Before running ANY authentication check, verify that the submitted photos show a real
+physical shoe being photographed.
+
+STEP 0A — DETECT REAL SHOE vs FLAT IMAGE:
+For each submitted photo, look for evidence that it shows a real 3D shoe:
+  Real shoe signals: cast shadow beneath the sole on the surface, depth-of-field blur
+  on the background, lace drape following gravity, specular highlight on leather or
+  patent material, slight lens distortion/perspective.
+
+  Stock/fake-image signals: pure white or digitally cut-out background, no cast
+  shadows anywhere, perfectly flat studio lighting with no falloff, screen moiré or
+  pixel grid visible, printed-page glare, image-within-image framing (photo of a photo).
+
+  → If img_real_shoe FAILS: set overallVerdict = "inconclusive" regardless of all other
+    checks. Add note: "Photos do not appear to show a real physical shoe — verdict
+    unreliable. Please resubmit with photos of the actual shoe."
+
+STEP 0B — EXIF METADATA (if context provided above):
+  If EXIF context was provided, note whether it supports a real camera photo.
+  Real camera (has_camera_exif=true) → supports authenticity of the photo.
+  Software-only or no EXIF → mildly suspicious, consider alongside visual evidence.
+
+STEP 0C — BARCODE VALIDATION (if decoded value provided above):
+  If a decoded barcode value was provided, validate:
+  - Does it match the brand's expected serial_format ({serial_format})?
+  - Does it match the style code printed on the label (check_id: box_barcode)?
+  If the decoded value doesn't match the visible style code → fail box_barcode_decoded.
+
+====================================
+STAGE 0D — CONDITION ASSESSMENT (INFORMATIONAL — no verdict impact)
+====================================
+Assess the physical condition of the shoe using all available angles.
+Record observations across five condition checks:
+  cond_sole_wear     → notes: "none" | "light" | "moderate" | "heavy"
+  cond_upper_cleanliness → notes: "clean" | "scuffed" | "dirty" | "stained"
+  cond_midsole_oxidation → notes: "none" | "slight" | "moderate" | "heavy"
+  cond_lace_condition → notes: "original-clean" | "original-worn" | "replacement"
+  cond_overall       → notes: "new" | "like-new" | "lightly-used" | "moderately-used" | "heavily-worn"
+
+IMPORTANT: All condition checks must return result="pass" — they are observations, NOT
+pass/fail verdicts. Do NOT include condition checks in the risk score calculation.
+
+====================================
 STAGE 1 — INPUT VALIDATION (MANDATORY — DO THIS BEFORE ANY OTHER STAGE)
 ====================================
 For EVERY user photo, perform these three steps in order. Do NOT skip this stage.
@@ -166,11 +242,15 @@ Examine every detail carefully. Report specific observations, not just pass/fail
    - Mesh/Knit: weave density, pattern regularity, correct thread color ratios
    - Any material that appears "too uniform" (printed grain) = suspicious
 
-5. Finishing & Construction:
-   - Adhesive: any yellow or white glue bead at sole/upper junction
-   - Paint/Color: bleeding between color zones, over-spray marks
+5. Finishing & Construction (StockX / GOAT criteria):
+   - Adhesive bond: no glue bead (>1mm) at sole/upper junction, no squeeze-out
+   - Paint/Color: no bleeding between color zones, no over-spray marks
    - Edge cuts: all material edges clean-cut or beveled, not frayed
-   - Midsole bond line: should be razor-clean, no wavy or uneven seam
+   - Midsole bond line: razor-clean, no wavy or uneven seam
+   - Heat-stamp / emboss quality: logos embossed into leather must have uniform depth
+     and crisp raised edges — blurry or shallow emboss = fail (Legit Check standard)
+   - Collar padding symmetry: ankle collar viewed from behind must be symmetric oval —
+     equal padding thickness left and right (Legit Check standard)
 
 6. Lace Inspection (use top-down photo):
    - Lace width relative to eyelet opening (should fill ~80% of eyelet diameter)
@@ -283,6 +363,8 @@ Hard overrides (regardless of score):
   - ANY 2 or more critical checks FAIL      → overallVerdict: "fake"
   - Style code mismatch across locations    → overallVerdict: "fake"
   - Wrong images provided (not shoes)       → overallVerdict: "fake"
+  - img_real_shoe FAILS                     → overallVerdict: "inconclusive" (not fake —
+                                              we cannot authenticate what we cannot see)
 
 ====================================
 ANTI-HALLUCINATION RULES

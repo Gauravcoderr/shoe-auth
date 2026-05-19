@@ -32,6 +32,11 @@ class AuthCheckDB(BaseModel):
     processing_status: str = "pending"  # "pending" | "processing" | "complete" | "failed"
     processing_error: Optional[str] = None
     tier: str = "free"
+    # Condition & image authenticity (populated during analysis)
+    condition: Optional[str] = None              # "new" | "like-new" | "lightly-used" | "moderately-used" | "heavily-worn"
+    image_authenticity_score: Optional[int] = None  # 0-100 derived from Image Authenticity checks
+    exif_results: Optional[dict] = None          # raw EXIF summary per photo
+    barcode_decoded: Optional[str] = None        # decoded barcode from box-label photo
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -47,6 +52,10 @@ class AuthCheckPublic(BaseModel):
     verdict_confidence: int
     verdict_summary: str
     processing_status: str
+    condition: Optional[str] = None
+    image_authenticity_score: Optional[int] = None
+    risk_score: Optional[int] = None
+    consistency_score: Optional[int] = None
     created_at: datetime
 
 
