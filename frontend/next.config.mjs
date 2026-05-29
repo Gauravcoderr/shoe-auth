@@ -2,6 +2,16 @@ import withPWA from "@ducanh2912/next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'shoe-auth.vercel.app' }],
+        destination: 'https://legitcheck.snkrscart.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
