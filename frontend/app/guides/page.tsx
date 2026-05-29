@@ -32,7 +32,7 @@ const GUIDES = [
     slug: "new-balance",
     name: "New Balance",
     desc: "550, 990 series — 'N' logo weight, ENCAP midsole ring, suede quality",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/300px-New_Balance_logo.svg.png",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ea/New_Balance_logo.svg",
     bg: "bg-[#eff6ff]",
     accent: "text-[#1d4ed8]",
     count: 5,
